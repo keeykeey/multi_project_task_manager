@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  setup:
+    container_name: setup
+    volumes:
+      - ./:/dockerApp
+    tty: true
+    build:
+      context: .
+      dockerfile: DockerfileSetup

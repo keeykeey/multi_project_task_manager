@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  frontend:
+    container_name: frontend_container
+    tty: true
+    build:
+      context: .
+      dockerfile: DockerfileFrontend
+    volumes:
+      - ./app/frontend:/dockerFrontend
+      - build_folder:/dockerFrontend/build
+    ports:
+      - "3000:3000"
+
+  nginx:
+    container_name: nginx_container
+    build:
+      context: .
+      dockerfile: DockerfileNginx
+    volumes:
+      - build_folder:/var/www/
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+
+volumes:
+  build_folder:
