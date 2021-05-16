@@ -1,0 +1,18 @@
+#https://zenn.dev/tatsurom/articles/golang-docker-environment
+FROM golang:1.15.7-alpine as dev
+
+#~/go/src/
+WORKDIR src
+
+RUN apk update \
+  && apk add --no-cache git \
+  && go get -u github.com/gin-gonic/gin \
+  && go get github.com/jinzhu/gorm \
+  && go get github.com/jinzhu/gorm/dialects/postgres 
+
+#~/go/volume/
+WORKDIR ../volume
+
+EXPOSE 8080
+
+ENTRYPOINT ["sh","run_backend.sh"]

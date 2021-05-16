@@ -1,6 +1,34 @@
+#https://zenn.dev/tatsurom/articles/golang-docker-environment
+#https://www.w2solution.co.jp/tech/2020/03/25/dockercompose%E3%81%A7go%E3%81%AEgin%E3%81%A8mysql%E3%81%AE%E7%92%B0%E5%A2%83%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%9F-%E7%AC%AC1%E5%BC%BE/
 version: "3.7"
 
 services:
+  db:
+    container_name: db_container
+    image: postgres:13.1-alpine
+    volumes:
+      - ./app/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}
+
+  backend:
+    container_name: backend_container
+    build:
+      context: .
+      dockerfile: DockerfileBackend
+      target: dev
+    tty: true
+    volumes:
+      - ./app/backend/volume/:/go/volume/
+      - ./app/backend/src/mylib/:/go/src/mylib/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
   frontend:
     container_name: frontend_container
     tty: true
