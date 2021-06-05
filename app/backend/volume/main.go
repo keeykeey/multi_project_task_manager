@@ -1,18 +1,13 @@
-//https://medium.com/swlh/building-a-restful-api-with-go-and-postgresql-494819f51810package main
 package main
 
 import (
         "encoding/json"
         "log"
+        "fmt"
         "net/http"
         _ "github.com/lib/pq"
         "mylib/db"
 )
-
-type User struct {
-        Name string `json:"name"`
-        Password string `json:"name"`
-}
 
 func GETHandler(w http.ResponseWriter,r *http.Request){
         con := db.ConnectDb()
@@ -22,18 +17,27 @@ func GETHandler(w http.ResponseWriter,r *http.Request){
                 log.Fatal(err)
         }
 
-        var users []User
-
-        for rows.Next(){
-                var user User
-                rows.Scan(&user.Name, &user.Password)
-                users = append(users,user)
+        type Users struct {
+                Id string
+                Name string
+                Password string
         }
 
-        userBytes, _ := json.MarshalIndent(users,"","\t")
+        var list [] Users
+
+        for rows.Next(){
+                var user Users
+                er := rows.Scan(&user.Id,&user.Name,&user.Password)
+                if er != nil {
+                        panic(er)
+                }
+                list = append(list,user)
+        }
+
+        json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
-        w.Write(userBytes)
+        w.Write(json_response)
 
         defer rows.Close()
         defer con.Close()
@@ -42,7 +46,13 @@ func GETHandler(w http.ResponseWriter,r *http.Request){
 func POSTHandler(w http.ResponseWriter,r *http.Request){
         con := db.ConnectDb()
 
-        var u User
+        type Users struct {
+                Id string
+                Name string
+                Password string
+        }
+
+        var u Users
         err := json.NewDecoder(r.Body).Decode(&u)
         if err != nil {
                 http.Error(w, err.Error(),http.StatusBadRequest)
@@ -64,6 +74,7 @@ func main(){
         http.HandleFunc("/",GETHandler)
         http.HandleFunc("/post", POSTHandler)
         log.Fatal(http.ListenAndServe(":8080",nil))
+
 }
 
 
