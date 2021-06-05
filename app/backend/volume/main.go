@@ -2,12 +2,11 @@
 package main
 
 import (
-        "database/sql"
         "encoding/json"
-        "fmt"
         "log"
         "net/http"
         _ "github.com/lib/pq"
+        "mylib/db"
 )
 
 type User struct {
@@ -15,34 +14,10 @@ type User struct {
         Password string `json:"name"`
 }
 
-const (
-        host = "db"//"172.18.0.1"
-        port = 5432
-        user = "keeykeey"
-        pw = "keeykeey"
-        dbname = "keeykeey"
-)
-
-func OpenConnection() *sql.DB{
-        //info := fmt.Sprintf("host=%s port=%d user=%s pw=%s dbname=%s sslmode=disable",host,port,user,pw,dbname)
-        info := fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=disable",host,port,user,dbname)
-        db, err := sql.Open("postgres",info)
-        if err != nil {
-                panic(err)
-        }
-
-        err = db.Ping()
-        if err !=nil {
-                panic(err)
-        }
-
-        return db
-}
-
 func GETHandler(w http.ResponseWriter,r *http.Request){
-        db := OpenConnection()
+        con := db.ConnectDb()
 
-        rows,err := db.Query("SELECT * FROM users")
+        rows,err := con.Query("SELECT * FROM users;")
         if err != nil {
                 log.Fatal(err)
         }
@@ -55,17 +30,17 @@ func GETHandler(w http.ResponseWriter,r *http.Request){
                 users = append(users,user)
         }
 
-        userBytes, _ := json.MarshalIndent(user,"","\t")
+        userBytes, _ := json.MarshalIndent(users,"","\t")
 
         w.Header().Set("Content-Type","application/json")
         w.Write(userBytes)
 
         defer rows.Close()
-        defer db.Close()
+        defer con.Close()
 }
 
 func POSTHandler(w http.ResponseWriter,r *http.Request){
-        db := OpenConnection()
+        con := db.ConnectDb()
 
         var u User
         err := json.NewDecoder(r.Body).Decode(&u)
@@ -75,14 +50,14 @@ func POSTHandler(w http.ResponseWriter,r *http.Request){
         }
 
         sqlStatement := `INSERT INTO users (name,password) VALUES ($1,$2) `
-        _, err = db.Exec(sqlStatement,u.Name,u.Password)
+        _, err = con.Exec(sqlStatement,u.Name,u.Password)
         if err != nil {
                 w.WriteHeader(http.StatusBadRequest)
                 panic(err)
         }
 
         w.WriteHeader(http.StatusOK)
-        defer db.Close()
+        defer con.Close()
 }
 
 func main(){
