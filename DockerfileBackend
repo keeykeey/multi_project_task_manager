@@ -7,8 +7,7 @@ WORKDIR src
 RUN apk update \
   && apk add --no-cache git \
   && go get -u github.com/gin-gonic/gin \
-  && go get github.com/jinzhu/gorm \
-  && go get github.com/jinzhu/gorm/dialects/postgres 
+  && go get -t github.com/lib/pq
 
 #~/go/volume/
 WORKDIR ../volume
