@@ -76,13 +76,14 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         type Projects struct {
                 Id string
                 Name string
+                Userid string
         }
 
         var list [] Projects
 
         for rows.Next(){
                 var project Projects
-                er := rows.Scan(&project.Id,&project.Name)
+                er := rows.Scan(&project.Id,&project.Name,&project.Userid)
                 if er != nil {
                         panic(er)
                 }
@@ -109,13 +110,14 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         type Tasks struct {
                 Id string
                 Name string
+                Projectid string
         }
 
         var list [] Tasks
 
         for rows.Next(){
                 var task Tasks
-                er := rows.Scan(&task.Id,&task.Name)
+                er := rows.Scan(&task.Id,&task.Name,&task.Projectid)
                 if er != nil {
                         panic(er)
                 }
