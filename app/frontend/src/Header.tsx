@@ -1,9 +1,17 @@
 import React from 'react';
 
-function Header() {
+interface Users{
+  id: string
+  name: string
+}
+
+const Header: React.FC<Users> = (props) =>{
   return (
     <div >
-      <button><i className="fas fa-bars"/>Menu</button>task manager
+      <h1>
+        <button><i className="fas fa-bars"/>Menu</button>
+        Hello {props.name}
+      </h1><hr/>
     </div>
   );
 }
