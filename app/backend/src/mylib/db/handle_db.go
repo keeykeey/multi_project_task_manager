@@ -48,21 +48,26 @@ func GetUsers(w http.ResponseWriter,r *http.Request){
         var list [] Users
 
         for rows.Next(){
-                var user Users
-                er := rows.Scan(&user.Id,&user.Name,&user.Password)
-                if er != nil {
-                        panic(er)
+                var u Users
+                err := rows.Scan(&u.Id,&u.Name,&u.Password)
+                if err != nil {
+                        panic(err)
                 }
-                list = append(list,user)
+                list = append(list,u)
         }
+
+        defer rows.Close()
+        defer con.Close()
 
         json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
+        w.Header().Set("Access-Control-Allow-Header","GET")
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        w.WriteHeader(http.StatusOK)
         w.Write(json_response)
 
-        defer rows.Close()
-        defer con.Close()
 }
 
 func GetProjects(w http.ResponseWriter,r *http.Request){
@@ -82,21 +87,26 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         var list [] Projects
 
         for rows.Next(){
-                var project Projects
-                er := rows.Scan(&project.Id,&project.Name,&project.Userid)
-                if er != nil {
-                        panic(er)
+                var p Projects
+                err := rows.Scan(&p.Id,&p.Name,&p.Userid)
+                if err != nil {
+                        panic(err)
                 }
-                list = append(list,project)
+                list = append(list,p)
         }
+
+        defer rows.Close()
+        defer con.Close()
 
         json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
+        w.Header().Set("Access-Control-Allow-Header","GET")
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        w.WriteHeader(http.StatusOK)
         w.Write(json_response)
 
-        defer rows.Close()
-        defer con.Close()
 }
 
 func GetTasks(w http.ResponseWriter,r *http.Request){
@@ -116,21 +126,25 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         var list [] Tasks
 
         for rows.Next(){
-                var task Tasks
-                er := rows.Scan(&task.Id,&task.Name,&task.Projectid)
-                if er != nil {
-                        panic(er)
+                var t Tasks
+                err := rows.Scan(&t.Id,&t.Name,&t.Projectid)
+                if err != nil {
+                        panic(err)
                 }
-                list = append(list,task)
+                list = append(list,t)
         }
+
+        defer rows.Close()
+        defer con.Close()
 
         json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
+        w.Header().Set("Access-Control-Allow-Header","GET")
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        w.WriteHeader(http.StatusOK)
         w.Write(json_response)
-
-        defer rows.Close()
-        defer con.Close()
 }
 
 func POSTHandler(w http.ResponseWriter,r *http.Request){
