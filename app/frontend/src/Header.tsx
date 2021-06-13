@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface Users{
-  id: string
+  id: number
   name: string
 }
 

@@ -7,6 +7,7 @@ import (
         "fmt"
         "net/http"
         _ "github.com/lib/pq"
+        "strconv"
 )
 
 const (
@@ -62,7 +63,8 @@ func GetUsers(w http.ResponseWriter,r *http.Request){
         json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
-        w.Header().Set("Access-Control-Allow-Header","GET")
+        w.Header().Set("Access-Control-Allow-Headers","uid")
+        w.Header().Set("Access-Control_Allow-Method","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
         w.WriteHeader(http.StatusOK)
@@ -72,8 +74,13 @@ func GetUsers(w http.ResponseWriter,r *http.Request){
 
 func GetProjects(w http.ResponseWriter,r *http.Request){
         con := ConnectDb()
+        
+        var uid int
+        var s = r.Header.Get("uid") //this returns type string. if you want to get s as type []string, use r.Header["uid"] instead.
+        uid, _ = strconv.Atoi(s)
+        var query = "SELECT * FROM projects WHERE userid = $1"
 
-        rows,err := con.Query("SELECT * FROM projects;")
+        rows,err := con.Query(query,uid)
         if err != nil {
                 log.Fatal(err)
         }
@@ -101,12 +108,13 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
-        w.Header().Set("Access-Control-Allow-Header","GET")
+        w.Header().Set("Access-Control-Allow-Headers","uid")
+        w.Header().Set("Access-Control_Allow-Method","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
         w.WriteHeader(http.StatusOK)
         w.Write(json_response)
-
+        //w.Write(uid)
 }
 
 func GetTasks(w http.ResponseWriter,r *http.Request){
@@ -140,7 +148,8 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
-        w.Header().Set("Access-Control-Allow-Header","GET")
+        w.Header().Set("Access-Control-Allow-Headers","pid")
+        w.Header().Set("Access-Control_Allow-Method","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
         w.WriteHeader(http.StatusOK)
