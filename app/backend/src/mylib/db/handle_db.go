@@ -78,7 +78,7 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         var uid int
         var s = r.Header.Get("uid") //this returns type string. if you want to get s as type []string, use r.Header["uid"] instead.
         uid, _ = strconv.Atoi(s)
-        var query = "SELECT * FROM projects WHERE userid = $1"
+        var query = "SELECT name FROM projects WHERE userid = $1"// ORDER BY id ASC"
 
         rows,err := con.Query(query,uid)
         if err != nil {
@@ -86,16 +86,14 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         }
 
         type Projects struct {
-                Id string
                 Name string
-                Userid string
         }
 
         var list [] Projects
 
         for rows.Next(){
                 var p Projects
-                err := rows.Scan(&p.Id,&p.Name,&p.Userid)
+                err := rows.Scan(&p.Name)
                 if err != nil {
                         panic(err)
                 }
@@ -114,7 +112,6 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         w.Header().Set("Access-Control-Allow-Credentials","true")
         w.WriteHeader(http.StatusOK)
         w.Write(json_response)
-        //w.Write(uid)
 }
 
 func GetTasks(w http.ResponseWriter,r *http.Request){
