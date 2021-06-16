@@ -11,8 +11,8 @@ interface Users{
 
 function getLoginUser(){
   const login_user:Users = {
-    id:2,
-    name:'testuser2'
+    id:1,
+    name:'testuser1'
   }
   return login_user
 }
