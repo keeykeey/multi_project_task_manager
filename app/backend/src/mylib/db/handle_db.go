@@ -117,8 +117,13 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
 
 func GetTasks(w http.ResponseWriter,r *http.Request){
         con := ConnectDb()
+        
+        var projectid int
+        var s = r.Header.Get("projectid")
+        projectid, _ = strconv.Atoi(s)
+        var query = "SELECT id,name FROM tasks WHERE projectid = $1"
 
-        rows,err := con.Query("SELECT * FROM tasks;")
+        rows,err := con.Query(query,projectid)
         if err != nil {
                 log.Fatal(err)
         }
@@ -126,14 +131,13 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         type Tasks struct {
                 Id string
                 Name string
-                Projectid string
         }
 
         var list [] Tasks
 
         for rows.Next(){
                 var t Tasks
-                err := rows.Scan(&t.Id,&t.Name,&t.Projectid)
+                err := rows.Scan(&t.Id,&t.Name)
                 if err != nil {
                         panic(err)
                 }
@@ -146,7 +150,7 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
-        w.Header().Set("Access-Control-Allow-Headers","pid")
+        w.Header().Set("Access-Control-Allow-Headers","projectid")
         w.Header().Set("Access-Control_Allow-Method","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
