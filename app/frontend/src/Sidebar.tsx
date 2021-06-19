@@ -1,10 +1,10 @@
-import { RSA_PKCS1_PSS_PADDING } from 'constants';
 import React, { useState, useEffect} from 'react';
 import ProjectButton from './components/ProjectButton'
 
-interface Users{
-  id: number;
-  name: string;
+interface Props{
+  user_id: number;
+  user_name: string;
+  handle_project_change:Function;
 }
 
 interface Projects{
@@ -19,29 +19,28 @@ interface Param  {
   headers: {'uid':string}
 }
 
-const Sidebar: React.FC<Users> = (props) => {
+const Sidebar: React.FC<Props> = (props) => {
   useEffect(()=>{
     fetchProjects(url,param)
-  },[props.id])
+  },[props.user_id])
 
   const [projects,setProjects] = useState<Projects[]>([])
 
-  const param:Param ={
+  const param:Param = {
     method:'GET', 
     mode:'cors',
     credentials:'include',
-    headers:{'uid':String(props.id)}
+    headers:{'uid':String(props.user_id)}
   }
 
   const url: string = 'http://127.0.0.1:8080/projects'
   
   function fetchProjects(url:string,param:Param){
-    let project_array:Projects[] = new Array()
+    var project_array:Projects[] = new Array()
     
     fetch(url,param)
     .then(res=>res.json())
     .then(json => {
-      console.log('see inside',json)      
       for (var i:number=0 ; i<json.length ; i++){
         var p:Projects={
           id : json[i].Id,
@@ -54,7 +53,9 @@ const Sidebar: React.FC<Users> = (props) => {
 
   return (
     <div>
-      {projects.map(p=><div key={p.id}><ProjectButton name={p.name}/></div>)}
+      {projects.map(p=><div key={p.id}>
+        <ProjectButton project_id={p.id} project_name={p.name} handle_project_change={props.handle_project_change}/>
+      </div>)}
     </div>
     
   );
