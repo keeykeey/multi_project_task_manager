@@ -1,3 +1,4 @@
+import { RSA_PKCS1_PSS_PADDING } from 'constants';
 import React, { useState, useEffect} from 'react';
 import ProjectButton from './components/ProjectButton'
 
@@ -7,7 +8,8 @@ interface Users{
 }
 
 interface Projects{
- name: string;
+  id: number;
+  name: string;
 }
 
 interface Param  {
@@ -18,14 +20,12 @@ interface Param  {
 }
 
 const Sidebar: React.FC<Users> = (props) => {
-  /*const [project,setProject] = useState<Projects|null>()*/
-  //現状anyを指定しないと、setProject(res.json())した時に、型エラーにより失敗する。anyではなくProjectsを指定した実装にしたい。要改良。
-  const [projects,setProjects] = useState<any>([])
+  useEffect(()=>{
+    fetchProjects(url,param)
+  },[props.id])
 
-  const p:Projects ={
-    name:'namae'
-  }
-  
+  const [projects,setProjects] = useState<Projects[]>([])
+
   const param:Param ={
     method:'GET', 
     mode:'cors',
@@ -36,40 +36,28 @@ const Sidebar: React.FC<Users> = (props) => {
   const url: string = 'http://127.0.0.1:8080/projects'
   
   async function fetchProjects(url:string,param:Param){
-    const res = await fetch(url,param).then(
-      res => {
-        if(res.status===200){
-          setProjects(res.json())
-        }else if(res.status!==200){
+    let project_array:Projects[] = new Array()
+    
+    fetch(url,param)
+    .then(res=>res.json())
+    .then(json => {
+      console.log('see inside',json)      
+      for (var i:number=0 ; i<json.length ; i++){
+        var p:Projects={
+          id : json[i].Id,
+          name: json[i].Name
         }
+        project_array.push(p)
       }
-    ).then(res=>console.log('projects',projects))
+    }).then(res=>setProjects(project_array))
   }
-  
-  /*
+
   return (
-    <div >
-      <ProjectButton name='count_infected'/><br/>
-      <ProjectButton name='task_manager'/><br/>
-      <ProjectButton name='song_editor'/><br/>
-      <ProjectButton name='create api wih golang'/><br/>
-      <button onClick={()=>fetchProjects(url,param)}>run fetchProjects function</button>
+    <div>
+      {projects.map(p=><div key={p.id}><ProjectButton name={p.name}/></div>)}
     </div>
     
   );
-  */
-
-  useEffect(()=>{
-    fetchProjects(url,param)
-  },[])
-
-  return(
-    <div>
-        {projects[0]}
-    </div>
-
-)
-
 
 }
 
