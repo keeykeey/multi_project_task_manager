@@ -35,7 +35,7 @@ const Sidebar: React.FC<Users> = (props) => {
 
   const url: string = 'http://127.0.0.1:8080/projects'
   
-  async function fetchProjects(url:string,param:Param){
+  function fetchProjects(url:string,param:Param){
     let project_array:Projects[] = new Array()
     
     fetch(url,param)
