@@ -2,11 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Login from './Login';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router, Switch,Route} from 'react-router-dom';
+  //https://qiita.com/yuta-ike/items/cd8adadc12797a7787cb
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router>
+      <Switch>
+        <Route exact path="/login" component={Login}/>
+        <Route exact path="/" component={App}/>
+      </Switch>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
