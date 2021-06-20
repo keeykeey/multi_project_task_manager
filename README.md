@@ -2,7 +2,7 @@
 <h2> what to do when react-icon-import-error is occured</h2>
   <ul>
     <li>@ root directory where app/ directory exists</li>
-    <div>$ docker exec -it frontend_container sh</div>
-    <li>@ dockerfileFrontend/ inside frontend_container which mounts to the local directory './app/frontend/'<li>
-    <div>$ RUN npm install react-icons --save</div>
+    <p>$ docker exec -it frontend_container sh</p>
+    <li>@ dockerfileFrontend/ inside frontend_container which mounts to the local directory './app/frontend/'</li>
+    <p>$ RUN npm install react-icons --save</p>
   </ul>
