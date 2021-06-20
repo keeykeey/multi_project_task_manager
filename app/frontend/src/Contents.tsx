@@ -46,7 +46,6 @@ function Contents(props:Props){
     .then(json=>{
       //画面ロード時に、jsonがnullになるので、下のjson.lengthの部分でエラーを吐かないように
       if(!json){return 0}
-      console.log('see inseide json',json)
       for (var i:number=0 ; i<json.length ; i++){
         var t:Tasks={
           id: json[i].Id,
