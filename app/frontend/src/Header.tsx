@@ -1,4 +1,7 @@
+import './App.css'
 import React from 'react';
+import { CgMenuGridR } from 'react-icons/cg';
+//https://react-icons.github.io/react-icons
 
 interface Users{
   id: number
@@ -8,10 +11,10 @@ interface Users{
 const Header: React.FC<Users> = (props) =>{
   return (
     <div >
-      <h1>
-        <button><i className="fas fa-bars"/>Menu</button>
-        Hello {props.name}
-      </h1><hr/>
+      <div className='row'>
+        < CgMenuGridR className='menu' onClick={()=>console.log('pushed')}/>
+        <div className='header-message'>Hello {props.name}</div>   
+      </div>
     </div>
   );
 }

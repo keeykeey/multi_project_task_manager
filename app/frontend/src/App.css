@@ -1,13 +1,4 @@
-.header{
-}
-
-.sidebar{
-  text-align: center;
-}
-
-.contents{
-}
-
+/*General*/
 .col{
   display:flex;
   flex-direction:column;
@@ -16,4 +7,29 @@
 .row{
   display:flex;
   flex-direction:row;
+}
+
+/*Header component*/
+.header{
+}
+
+.menu{
+  margin:2px 2px 2px 2px;
+  height:35px;
+  width:35px;
+  cursor:pointer;
+  color:#505050;
+}
+
+.header-message{
+  font-size:35px;
+}
+
+/*Sidebar component*/
+.sidebar{
+  text-align: center;
+}
+
+/*Contents component*/
+.contents{
 }

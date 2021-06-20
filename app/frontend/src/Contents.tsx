@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import TaskCard from './components/TaskCard'
+import TaskCard from './components/TaskCard';
 
 interface Props{
   project_id:number|null;
