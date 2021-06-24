@@ -3,13 +3,13 @@ package main
 import (
         "log"
         "net/http"
-        "mylib/db"
+        "mylib/api"
 )
 
 func main(){
-        http.HandleFunc("/users",db.GetUsers)
-        http.HandleFunc("/projects",db.GetProjects)
-        http.HandleFunc("/tasks",db.GetTasks)
-        http.HandleFunc("/post", db.POSTHandler)
+        http.HandleFunc("/users",api.GetUsers)
+        http.HandleFunc("/projects",api.GetProjects)
+        http.HandleFunc("/tasks",api.GetTasks)
+        http.HandleFunc("/post", api.POSTHandler)
         log.Fatal(http.ListenAndServe(":8080",nil))
 }
