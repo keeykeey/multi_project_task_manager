@@ -1,7 +1,6 @@
 package auth
 
 import (
-	"fmt"
 	"encoding/json"
 	"time"
 	"net/http"
