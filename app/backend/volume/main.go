@@ -4,6 +4,7 @@ import (
         "log"
         "net/http"
         "mylib/api"
+        "mylib/auth"
 )
 
 func main(){
@@ -11,5 +12,6 @@ func main(){
         http.HandleFunc("/projects",api.GetProjects)
         http.HandleFunc("/tasks",api.GetTasks)
         http.HandleFunc("/post", api.POSTHandler)
+        http.HandleFunc("/auth",auth.TokenAuthenteicate)
         log.Fatal(http.ListenAndServe(":8080",nil))
 }
