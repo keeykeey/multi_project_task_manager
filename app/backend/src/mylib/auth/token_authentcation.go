@@ -57,7 +57,8 @@ func TokenAuthenteicate(w http.ResponseWriter, r *http.Request){
 	rows := con.QueryRow(query1,u.Name,u.Password)
 
 	/*
-		username と password でuserテーブルからidを含むレコードを取得したので、レコードからidを取り出すためにインターフェース（と言ってもただのint型変数）を定義
+		username と password でuserテーブルからidを含むレコードを取得したので、
+		レコードからidを取り出すためにインターフェース（と言ってもただのint型変数）を定義
 	*/
 	var uid int
 	rows.Scan(&uid)
