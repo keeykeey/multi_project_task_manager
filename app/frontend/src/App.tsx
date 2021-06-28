@@ -24,14 +24,17 @@ const App: React.FC = () =>  {
     setProjectId(project_id)
   }
   return (
+    
     <div >
-      <div className='col'></div>
+      <div className='col'>
         <div className='header'> <Header id={user.id} name={user.name}/> </div>
         <div className='row'>
           <div className='sidebar'><Sidebar user_id={user.id} user_name={user.name} handle_project_change={handleProjectChange}/> </div>
           <div className='contents'> <Contents project_id={projectId}/> </div>
         </div>
+      </div>
     </div>
+    
   );
 }
 
