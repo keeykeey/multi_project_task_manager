@@ -74,8 +74,6 @@ function Login(props:Props){
     return(
         <div>
             <h1>Login Page</h1><hr/>
-            <button onClick={()=>console.log('post me')}>POST</button>
-            
             <ul>
                 <input onChange={(e)=>handleInputForm(e,'name')} 
                        placeholder='name'/><br/>
