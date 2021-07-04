@@ -1,18 +1,16 @@
 import React, {useState,useEffect} from 'react';
+import './App.css' ;
 import TaskCard from './components/TaskCard';
 
 interface Props{
   project_id:number|null;
 }
 
-interface Users {
-  id: number;
-  name:string;
-}
-
 interface Tasks {
   id: number;
   name: string;
+  deadline: string;//日付の差を計算するときは文字列をnew Data()に渡す。
+  taskpriority: number;
 }
 
 interface Param  {
@@ -24,7 +22,7 @@ interface Param  {
 
 function Contents(props:Props){
   useEffect(()=>{
-    fetchTasks(url,param)
+    fetchTasks(url,param)// eslint-disable-next-line react-hooks/exhaustive-deps
   },[props.project_id])
 
   const [tasks,setTasks] = useState<Tasks[]>([])
@@ -39,7 +37,7 @@ function Contents(props:Props){
   const url: string = 'http://127.0.0.1:8080/tasks'
 
   function fetchTasks(url:string,param:Param){
-    var tasks_array:Tasks[] = new Array()
+    var tasks_array:Tasks[] = []
 
     fetch(url,param)
     .then(res=>res.json())
@@ -49,7 +47,9 @@ function Contents(props:Props){
       for (var i:number=0 ; i<json.length ; i++){
         var t:Tasks={
           id: json[i].Id,
-          name: json[i].Name
+          name: json[i].Name,
+          deadline: json[i].Deadline,
+          taskpriority: json[i].Taskpriority
         }
         tasks_array.push(t)
       }
@@ -57,9 +57,13 @@ function Contents(props:Props){
   }
 
   return (
-    <div >
+    <div className='contents'>
+      <h3>{String(tasks[0])==='undefined' ? '' : 'Tasks'}</h3><hr/>
       {tasks.map(t=><div key={t.id}>
-        <TaskCard text={t.name}/>
+        <TaskCard id = {t.id}
+                  text={t.name} 
+                  deadline={t.deadline} 
+                  taskpriority={t.taskpriority}/>
       </div>)}
     </div>
   );
