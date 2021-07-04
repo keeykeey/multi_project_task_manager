@@ -21,7 +21,7 @@ interface Param  {
 
 const Sidebar: React.FC<Props> = (props) => {
   useEffect(()=>{
-    fetchProjects(url,param)
+    fetchProjects(url,param)// eslint-disable-next-line react-hooks/exhaustive-deps
   },[props.user_id])
 
   const [projects,setProjects] = useState<Projects[]>([])
@@ -36,7 +36,7 @@ const Sidebar: React.FC<Props> = (props) => {
   const url: string = 'http://127.0.0.1:8080/projects'
   
   function fetchProjects(url:string,param:Param){
-    var project_array:Projects[] = new Array()
+    var project_array:Projects[] = []
     
     fetch(url,param)
     .then(res=>res.json())
@@ -52,7 +52,7 @@ const Sidebar: React.FC<Props> = (props) => {
   }
 
   return (
-    <div>
+    <div className='sidebar'>
       {projects.map(p=><div key={p.id}>
         <ProjectButton project_id={p.id} project_name={p.name} handle_project_change={props.handle_project_change}/>
       </div>)}
