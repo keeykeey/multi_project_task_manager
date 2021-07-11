@@ -42,7 +42,7 @@ func GetUsers(w http.ResponseWriter,r *http.Request){
 
         w.Header().Set("Content-Type","application/json")
         w.Header().Set("Access-Control-Allow-Headers","uid")
-        w.Header().Set("Access-Control_Allow-Method","GET")
+        w.Header().Set("Access-Control_Allow-Methods","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
         w.WriteHeader(http.StatusOK)
@@ -86,7 +86,7 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
 
         w.Header().Set("Content-Type","application/json")
         w.Header().Set("Access-Control-Allow-Headers","uid")
-        w.Header().Set("Access-Control_Allow-Method","GET")
+        w.Header().Set("Access-Control_Allow-Methods","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
         w.WriteHeader(http.StatusOK)
@@ -131,13 +131,14 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
 
         w.Header().Set("Content-Type","application/json")
         w.Header().Set("Access-Control-Allow-Headers","projectid")
-        w.Header().Set("Access-Control_Allow-Method","GET")
+        w.Header().Set("Access-Control_Allow-Methods","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
         w.WriteHeader(http.StatusOK)
         w.Write(json_response)
 }
 
+/*あとでこれをベースにしてtaskの新規作成用apiを作る。
 func PutTasks(w http.ResponseWriter,r *http.Request){
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Method","POST")//本当は”PUT"にすべきかもしれないが、ここではrequestのbodyを受け取ってsqlで使えればいいので、POSTでも可とする。
@@ -170,6 +171,78 @@ func PutTasks(w http.ResponseWriter,r *http.Request){
         //con.Exec("UPDATE tasks SET name=sample name, deadline=$1,taskpriority=1 WHERE id=$2",t.Deadline,t.Id)
 
         //fmt.Fprintf(w,t.Name+t.Deadline+t.Taskpriority+t.Id)
+
+        defer con.Close()
+}
+*/
+
+func PutTasks(w http.ResponseWriter,r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","PUT")//本当は”PUT"にすべきかもしれないが、ここではrequestのbodyを受け取ってsqlで使えればいいので、POSTでも可とする。
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control-Allow-Headers",headers)
+
+        con := db.ConnectDb()
+
+        type Tasks struct {
+                Id int
+                Name string
+                Deadline string
+                Taskpriority int
+        }//frontendから投げられるrequest.bodyのjsonのキーは、大文字小文字の違いは気にしなくてもいいが、上記Tasksのキーと同じにしないと下でjson.NewDecoder()の時にエラーとなる。
+         //例えば、TasksでNameと定義しているのに、frontendのrequest.bodyからtask_nameというキーで値を投げても、デコードできない。
+
+        var t Tasks
+
+        err := json.NewDecoder(r.Body).Decode(&t)
+
+        if err != nil {
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprintf(w,"ERROR : " + err.Error())
+                return
+        }//エラーハンドリングをもう少し練りたいところ。フロント側で、status-codeの値に応じて処理を分岐したいので、エラーの時には返すstatus-codeを指定したい。
+
+        var query = "UPDATE tasks SET name=$1, deadline=$2, taskpriority=$3 WHERE id=$4"
+        con.Exec(query,t.Name,t.Deadline,t.Taskpriority,t.Id)
+        //con.Exec("UPDATE tasks SET name=sample name, deadline=$1,taskpriority=1 WHERE id=$2",t.Deadline,t.Id)
+
+        //fmt.Fprintf(w,t.Name+t.Deadline+t.Taskpriority+t.Id)
+
+        defer con.Close()
+}
+
+func DeleteTasks(w http.ResponseWriter, r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","DELETE")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control-Allow-Headers",headers)
+
+        var taskid int
+        var s = r.Header.Get("taskid") //this returns type string. if you want to get s as type []string, use r.Header["taskid"] instead.
+        taskid, _ = strconv.Atoi(s)
+
+        con := db.ConnectDb()
+
+        /*
+        type Tasks struct {
+                Id int
+        }
+
+        var t Tasks
+
+        err := json.NewDecoder(r.Body).Decode(&t)
+
+        if err != nil {
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprintf(w,"ERROR : " + err.Error())
+                return
+        }
+        */
+
+        var query = "DELETE FROM tasks WHERE id = $1"
+        con.Exec(query,taskid)
 
         defer con.Close()
 }

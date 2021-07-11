@@ -24,7 +24,7 @@ func TokenAuthenteicate(w http.ResponseWriter, r *http.Request){
 		Credentialsは、front側でcredentialsを'include'に設定しているため、backend側で’Credentials:true'にしてあげなくてはいけない。
 	*/
 	w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
-	w.Header().Set("Access-Control-Allow-Method","POST")
+	w.Header().Set("Access-Control-Allow-Methods","POST")
 	w.Header().Set("Access-Control-Allow-Credentials","true")
 	headers := r.Header.Get("Access-Control-Request-Headers")
 	w.Header().Set("Access-Control-Allow-Headers",headers)

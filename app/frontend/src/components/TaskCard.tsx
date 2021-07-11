@@ -22,8 +22,8 @@ interface Param {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   mode: 'no-cors' | 'cors' | 'same-origin',
   credentials: 'include' | 'same-origin' | 'same-origin' | 'omit',
-  headers:{'Content-Type':'application/json' | 'text/html' |'multipart/form-data'},
-  body: string
+  headers:{'Content-Type':'application/json' | 'text/html' |'multipart/form-data'}|{'taskid':string},
+  body: string | null
 }
 
 interface EditTaskForm{
@@ -120,9 +120,21 @@ const TaskCard: React.FC<Props> = (props) => {
   /*
       delete-tasks modal window
   */
-  function deleteTask(){
-    console.log('you delete it')
+  function deleteTask(){   
     const url: string = 'http://127.0.0.1:8080/deletetasks'
+    const param:Param = {
+      method:'DELETE',
+      mode:'cors',
+      credentials:'include',
+      headers:{
+        'taskid':String(props.id)
+      },
+      body:null
+    }
+    
+    fetch(url,param)
+    .then(res=>console.log(res))
+    .catch(error=>console.log(error))
   }
 
   /*
@@ -153,7 +165,7 @@ const TaskCard: React.FC<Props> = (props) => {
       taskpriority: Number(priorityInput)     
     }
     const param:Param = {
-      method:'POST',
+      method:'PUT',
       mode:'cors',
       credentials:'include',
       headers:{
