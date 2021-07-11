@@ -138,9 +138,9 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         w.Write(json_response)
 }
 
-func PostTasks(w http.ResponseWriter,r *http.Request){
+func PutTasks(w http.ResponseWriter,r *http.Request){
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
-        w.Header().Set("Access-Control-Allow-Method","POST")
+        w.Header().Set("Access-Control-Allow-Method","POST")//本当は”PUT"にすべきかもしれないが、ここではrequestのbodyを受け取ってsqlで使えればいいので、POSTでも可とする。
         w.Header().Set("Access-Control-Allow-Credentials","true")
         headers := r.Header.Get("Access-Control-Request-Headers")
         w.Header().Set("Access-Control-Allow-Headers",headers)
