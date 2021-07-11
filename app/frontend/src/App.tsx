@@ -75,7 +75,7 @@ const App: React.FC = () =>  {
           {/* SIDEBAR */}
           {showModalSidebar ? 
             <div id='overlay1' onClick={modalSideBar}>
-              <div onClick={(e)=>e.stopPropagation()}>
+              <div className='slide' onClick={(e)=>e.stopPropagation()}>
                 <Sidebar user_id={user.id} user_name={user.name} handle_project_change={handleProjectChange}/>
               </div>
             </div>:

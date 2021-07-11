@@ -37,6 +37,19 @@
   height:500px;
 }
 
+.slide{
+  animation: anim1 0.5s;
+}
+
+@keyframes anim1 {
+0% {
+transform: translateX(-50px);
+}
+100% {
+transform: translateX(0px);
+}
+}
+
 #overlay1{
   /*　画面を覆う設定　*/
     position:fixed;
