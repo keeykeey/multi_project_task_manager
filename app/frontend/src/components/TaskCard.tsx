@@ -145,7 +145,7 @@ const TaskCard: React.FC<Props> = (props) => {
   }
 
   function editTask(){
-    const url: string = 'http://127.0.0.1:8080/posttasks'
+    const url: string = 'http://127.0.0.1:8080/puttasks'
     const edit_form: EditTaskForm = {
       id: Number(props.id),
       name: String(taskNameInput),
