@@ -7,6 +7,7 @@ import (
         _ "github.com/lib/pq"
         "strconv"
         "mylib/db"
+        "fmt"
 )
 
 func GetUsers(w http.ResponseWriter,r *http.Request){
@@ -98,7 +99,7 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         var projectid int
         var s = r.Header.Get("projectid")
         projectid, _ = strconv.Atoi(s)
-        var query = "SELECT id,name FROM tasks WHERE projectid = $1"
+        var query = "SELECT id,name,deadline,taskpriority FROM tasks WHERE projectid = $1"
 
         rows,err := con.Query(query,projectid)
         if err != nil {
@@ -108,13 +109,15 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         type Tasks struct {
                 Id string
                 Name string
+                Deadline string
+                Taskpriority int
         }
 
         var list [] Tasks
 
         for rows.Next(){
                 var t Tasks
-                err := rows.Scan(&t.Id,&t.Name)
+                err := rows.Scan(&t.Id,&t.Name,&t.Deadline,&t.Taskpriority)
                 if err != nil {
                         panic(err)
                 }
@@ -135,29 +138,38 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         w.Write(json_response)
 }
 
-func POSTHandler(w http.ResponseWriter,r *http.Request){
+func PostTasks(w http.ResponseWriter,r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Method","POST")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control-Allow-Headers",headers)
+
         con := db.ConnectDb()
 
-        type Users struct {
-                Id string
+        type Tasks struct {
+                Id int
                 Name string
-                Password string
-        }
+                Deadline string
+                Taskpriority int
+        }//frontendから投げられるrequest.bodyのjsonのキーは、大文字小文字の違いは気にしなくてもいいが、上記Tasksのキーと同じにしないと下でjson.NewDecoder()の時にエラーとなる。
+         //例えば、TasksでNameと定義しているのに、frontendのrequest.bodyからtask_nameというキーで値を投げても、デコードできない。
 
-        var u Users
-        err := json.NewDecoder(r.Body).Decode(&u)
+        var t Tasks
+
+        err := json.NewDecoder(r.Body).Decode(&t)
+
         if err != nil {
-                http.Error(w, err.Error(),http.StatusBadRequest)
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprintf(w,"ERROR : " + err.Error())
                 return
-        }
+        }//エラーハンドリングをもう少し練りたいところ。フロント側で、status-codeの値に応じて処理を分岐したいので、エラーの時には返すstatus-codeを指定したい。
 
-        sqlStatement := `INSERT INTO users (name,password) VALUES ($1,$2) `
-        _, err = con.Exec(sqlStatement,u.Name,u.Password)
-        if err != nil {
-                w.WriteHeader(http.StatusBadRequest)
-                panic(err)
-        }
+        var query = "UPDATE tasks SET name=$1, deadline=$2, taskpriority=$3 WHERE id=$4"
+        con.Exec(query,t.Name,t.Deadline,t.Taskpriority,t.Id)
+        //con.Exec("UPDATE tasks SET name=sample name, deadline=$1,taskpriority=1 WHERE id=$2",t.Deadline,t.Id)
 
-        w.WriteHeader(http.StatusOK)
+        //fmt.Fprintf(w,t.Name+t.Deadline+t.Taskpriority+t.Id)
+
         defer con.Close()
 }
