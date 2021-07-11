@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './components.css';
 import { RiDeleteBin6Line } from 'react-icons/ri'; 
 import { FiEdit } from 'react-icons/fi';
+import { GoAlert } from 'react-icons/go';
 
 /*
     PROPS
@@ -9,6 +10,25 @@ import { FiEdit } from 'react-icons/fi';
 interface Props{
   id: number;
   text: string;
+  deadline: string;
+  taskpriority: number;
+  editInfoTrigger:Function;
+}
+
+/*
+    INTERFACE
+*/
+interface Param {
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+  mode: 'no-cors' | 'cors' | 'same-origin',
+  credentials: 'include' | 'same-origin' | 'same-origin' | 'omit',
+  headers:{'Content-Type':'application/json' | 'text/html' |'multipart/form-data'},
+  body: string
+}
+
+interface EditTaskForm{
+  id: number;
+  name: string;
   deadline: string;
   taskpriority: number;
 }
@@ -22,7 +42,8 @@ const TaskCard: React.FC<Props> = (props) => {
     本当はcssのみで設定できた方が、シンプルで良いと思うが、TASK CARDの色をユーザーアクション、priorityに応じて動的に変えられる等にするためには、
     どうしてもtypescriptで書く必要があった。cssのみでかける方法が分かれば、書き直したい。
   */
-  const priorityColor:string[] = ['#ab3140','#45a371','#8be0b0']
+  const priorityColor:string[] = ['#dd4400','#0044dd','#44dd44']
+  const priorityWords:string[] = ['Important','Noraml','Not so important']
 
   const task_card_style:React.CSSProperties={
     margin:'3px 3px 3px 3px',
@@ -83,7 +104,7 @@ const TaskCard: React.FC<Props> = (props) => {
     const _x:number = e.clientX
     const _y:number = e.clientY
     const width:number = 200
-    const height:number = 100
+    const height:number = 130
     const style:React.CSSProperties={
       width:width,
       height:height,
@@ -91,16 +112,67 @@ const TaskCard: React.FC<Props> = (props) => {
       top:_y-height,
       left:_x-width,
       backgroundColor:'#ffffff',
+      border:'0.1rem solid',
     }
     setModalStyle(style)
   }
-
+  
+  /*
+      delete-tasks modal window
+  */
   function deleteTask(){
     console.log('you delete it')
+    const url: string = 'http://127.0.0.1:8080/deletetasks'
+  }
+
+  /*
+      edit-tasks modal window
+  */
+  const [taskNameInput,setTaskNameInput] = useState<string>()
+  const [deadLineInput,setDeadLineInput] = useState<string>()
+  const [priorityInput,setPriorityInput] = useState<number>()
+
+  function handleTaskNameInput(e:any){//本当は(e:any)ではなく、型を指定するべき。
+    setTaskNameInput(e.target.value)
+  }
+  
+  function handleDeadLineInput(e:any){//本当は(e:any)ではなく、型を指定するべき。
+    setDeadLineInput(e.target.value)
+  }
+
+  function handlePriorityInput(e:any){//本当は(e:any)ではなく、型を指定するべき。
+    setPriorityInput(e.target.value)
   }
 
   function editTask(){
-    console.log('you edit it')
+    const url: string = 'http://127.0.0.1:8080/posttasks'
+    const edit_form: EditTaskForm = {
+      id: Number(props.id),
+      name: String(taskNameInput),
+      deadline: String(deadLineInput),
+      taskpriority: Number(priorityInput)     
+    }
+    const param:Param = {
+      method:'POST',
+      mode:'cors',
+      credentials:'include',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body: JSON.stringify(edit_form)
+    }
+
+    fetch(url,param)
+    .then(res=>{
+      console.log('success...')
+    })
+    .then(res=>{
+      setTimeout(modalEditWindow,500)
+      setTimeout(props.editInfoTrigger,1000)
+    })
+    .catch(error=>{
+      console.log('error...',error)
+    })
   }
   
   /*
@@ -111,7 +183,7 @@ const TaskCard: React.FC<Props> = (props) => {
       <div className='TaskCardBlock'> 
 
         {/* CARD */}
-        <button style={taskCardStyle} 
+        <button style={taskCardStyle}
                 onMouseLeave={()=>handleHoverTaskCard(task_card_style)}
                 onMouseEnter={()=>handleHoverTaskCard(task_card_style_hover)}>{ props.text }</button>
 
@@ -125,9 +197,9 @@ const TaskCard: React.FC<Props> = (props) => {
         {showModalDeleteWindow?
           <div id='overlay2' onClick={modalDeleteWindow}>
             <div style={modalStyle} onClick={(e)=>e.stopPropagation()}>
-              <p>do you really delete it?</p>
-              <button onClick={deleteTask}>yes</button>
-              <button onClick={modalDeleteWindow}>no</button>
+              <p ><GoAlert/>do you really delete it?</p>
+              <button className='btnInModal' onClick={deleteTask}>yes</button>
+              <button className='btnInModal' onClick={modalDeleteWindow}>no</button>
             </div>
           </div>:
         ''}
@@ -142,8 +214,18 @@ const TaskCard: React.FC<Props> = (props) => {
         {showModalEditWindow?
           <div id='overlay3' onClick={modalEditWindow}>
             <div style={modalStyle} onClick={(e)=>e.stopPropagation()}>
-              <p>edit modal window</p>
-              <button onClick={editTask}>Edit</button>
+              <div>Edit</div>
+              <ul>
+                <input type='text' onChange={(e)=>handleTaskNameInput(e)} placeholder={props.text}/>
+                <input type='text' onChange={(e)=>handleDeadLineInput(e)} placeholder={props.deadline.slice(0,10)}/>
+                <select onChange={(e)=>handlePriorityInput(e)}>
+                  <option value=''></option>
+                  <option value='1'>{priorityWords[0]}</option>
+                  <option value='2'>{priorityWords[1]}</option>
+                  <option value='3'>{priorityWords[2]}</option>
+                </select>
+                <button onClick={editTask}>Edit the Task</button>
+              </ul>              
             </div>
           </div>:
         ''}

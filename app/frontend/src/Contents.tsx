@@ -56,6 +56,15 @@ function Contents(props:Props){
     }).then(res=>setTasks(tasks_array))
   }
 
+  function editInfoTrigger(){
+    /*
+      TaskCardにpropsとして渡す。
+      TaskCardのeditが成功した時に、この関数が実行され、ユーザーの操作なしで編集内容が反映される。
+      useEffect経由で変更を反映させるべきかとも思ったが、その場合処理が回りくどい気がする。
+    */
+    fetchTasks(url,param)
+  }
+
   return (
     <div className='contents'>
       <h3>{String(tasks[0])==='undefined' ? '' : 'Tasks'}</h3><hr/>
@@ -63,7 +72,8 @@ function Contents(props:Props){
         <TaskCard id = {t.id}
                   text={t.name} 
                   deadline={t.deadline} 
-                  taskpriority={t.taskpriority}/>
+                  taskpriority={t.taskpriority}
+                  editInfoTrigger={editInfoTrigger}/>
       </div>)}
     </div>
   );
