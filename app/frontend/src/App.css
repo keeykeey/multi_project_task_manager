@@ -40,7 +40,6 @@
 .slide{
   animation: anim1 0.5s;
 }
-
 @keyframes anim1 {
 0% {
 transform: translateX(-50px);
@@ -48,7 +47,7 @@ transform: translateX(-50px);
 100% {
 transform: translateX(0px);
 }
-}
+}/*表示する時のみならず、非表示にする時のアニメーションも実装した方が良い*/
 
 #overlay1{
   /*　画面を覆う設定　*/
