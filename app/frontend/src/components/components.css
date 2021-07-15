@@ -57,3 +57,20 @@
   text-align:center;
   margin:0 10px 0 10px;
 }
+
+.CreateTasksButtonBlock{
+  height:20px;
+  align-items:center;
+}
+
+.CreateTasksButton{
+  border-color:#5498ab99;
+  background-color:#5498ab99;
+  color:#ffffff;
+  margin:auto 0 auto 250px;
+  cursor:pointer;
+}
+
+.CreateTasksButton:hover{
+  font-size:16px;
+}
