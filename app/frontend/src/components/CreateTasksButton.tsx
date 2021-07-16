@@ -26,11 +26,9 @@ const CreateTasksButton: React.FC<Props> = (props) => {
     switch (modalMode){
       case true:
         setModalMode(false);
-        console.log('true');
         break;
       case false:
         setModalMode(true);
-        console.log('false');
         break;
     };
   }
@@ -44,6 +42,14 @@ const CreateTasksButton: React.FC<Props> = (props) => {
   return (
     <div className='CreateTasksButtonBlock'>
       <button className='CreateTasksButton' onClick={changeModalMode}>NEW </button>
+      {modalMode ? 
+      <div id='overlay_create' onClick={changeModalMode}>
+        <div className='modalCreateTasks' onClick={(e)=>e.stopPropagation()}>
+          hello
+        </div>
+      </div>
+      :
+      null}
     </div>
   );
 }

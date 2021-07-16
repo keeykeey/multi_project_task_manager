@@ -58,6 +58,10 @@
   margin:0 10px 0 10px;
 }
 
+/* 
+  CreateTasksButton
+*/
+
 .CreateTasksButtonBlock{
   height:20px;
   align-items:center;
@@ -73,4 +77,25 @@
 
 .CreateTasksButton:hover{
   font-size:16px;
+}
+
+#overlay_create{
+  /*　画面を覆う設定　*/
+  position:fixed;
+  top:50px;
+  left:0px;
+  width:100%;
+  height:100%;
+  background-color:#00000080;
+  
+  /*　画面の中央に要素を表示させる設定　*/
+  display:flex;
+  align-items:center;
+  justify-content: center;
+}
+
+.modalCreateTasks{
+  width:400px;
+  height:400px;
+  background-color:#ffffff;
 }

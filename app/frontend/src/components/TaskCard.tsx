@@ -133,8 +133,12 @@ const TaskCard: React.FC<Props> = (props) => {
     }
     
     fetch(url,param)
-    .then(res=>console.log(res))
-    .catch(error=>console.log(error))
+    .then(res=>console.log('success...'))
+    .then(res=>{
+      setTimeout(modalDeleteWindow,500)
+      setTimeout(props.editInfoTrigger,800)
+    })
+    .catch(error=>console.log('error...',error))
   }
 
   /*
@@ -175,16 +179,12 @@ const TaskCard: React.FC<Props> = (props) => {
     }
 
     fetch(url,param)
-    .then(res=>{
-      console.log('success...')
-    })
+    .then(res=>console.log('success...'))
     .then(res=>{
       setTimeout(modalEditWindow,500)
-      setTimeout(props.editInfoTrigger,1000)
+      setTimeout(props.editInfoTrigger,550)
     })
-    .catch(error=>{
-      console.log('error...',error)
-    })
+    .catch(error=>console.log('error...',error))
   }
   
   /*
@@ -192,7 +192,7 @@ const TaskCard: React.FC<Props> = (props) => {
   */
   return (
     <div>
-      <div className='TaskCardBlock'> 
+      <div className='TaskCardBlock'>
 
         {/* CARD */}
         <button style={taskCardStyle}

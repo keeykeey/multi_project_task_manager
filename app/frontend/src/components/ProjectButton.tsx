@@ -9,7 +9,7 @@ interface Props{
 
 const ProjectButton: React.FC<Props> = (props) => {
   return (
-      <button className='ProjectButton' onClick={()=>props.handle_project_change(props.project_id)}> { props.project_name } </button>
+      <button className='ProjectButton' onMouseEnter={()=>props.handle_project_change(props.project_id)}> { props.project_name } </button>
   );
 }
 
