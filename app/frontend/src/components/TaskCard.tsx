@@ -43,7 +43,7 @@ const TaskCard: React.FC<Props> = (props) => {
     どうしてもtypescriptで書く必要があった。cssのみでかける方法が分かれば、書き直したい。
   */
   const priorityColor:string[] = ['','#dd4400','#0044dd','#44dd44']
-　/* 
+　  /* 
         -------------------------------------
         priorityColor   |   taskpriority(DB)
         -------------------------------------
@@ -54,7 +54,7 @@ const TaskCard: React.FC<Props> = (props) => {
         -------------------------------------
         というマッピングになっているので、priorityColorの0要素目は''にしている。
 　　　　　taskpriorityに設定する値は、0スタートではなく1スタートという仕様にしている。
-  */
+    */
   const priorityWords:string[] = ['Important','Noraml','Not so important']
 
   const task_card_style:React.CSSProperties={
@@ -63,7 +63,7 @@ const TaskCard: React.FC<Props> = (props) => {
     width:'260px',
     height:'90%',
     //hoverした時に色が濃くなるように、アルファ(+'99')を設定。
-    backgroundColor:priorityColor[props.taskpriority-1]+'99',
+    backgroundColor:priorityColor[props.taskpriority]+'99',
     border:'none',
     borderRadius:20,
     cursor:'pointer', 
