@@ -76,7 +76,7 @@ const TaskCard: React.FC<Props> = (props) => {
     height:'90%',
     //DBに(0,1,2ではなく)1,2,3で値を入れているから、インデックス番号として使う時にはマイナス１している。
     //hoverした時に色が濃くなるように、アルファ(+'99')を無くした。
-    backgroundColor:priorityColor[props.taskpriority-1],
+    backgroundColor:priorityColor[props.taskpriority],
     border:'none',
     borderRadius:20,
     cursor:'pointer', 
