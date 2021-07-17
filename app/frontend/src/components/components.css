@@ -12,6 +12,7 @@
   ProjectButton.tsx
 */
 .ProjectButton{
+  outline:none;
   width:180px;
   height:40px;
   background-color:#ffffff;
@@ -20,17 +21,19 @@
 }
 .ProjectButton:hover{
   background-color:#dfdfdf;
-  font-size:1.05em;
+  font-size:16px;
 }
 
 /*
   TaskCard.tsx
 */
 .TaskCardBlock{
+  outline:none;
+  border-radius:20px;
   height:60px;
   vertical-align:middle;
   display:flex;
-  background-color:#f2f2f2dd
+  background-color:#ffffff
 }
 
 .TaskCardIcon{
@@ -49,7 +52,7 @@
 .TaskDeadLineBlock{
   text-align:right;
   margin :0 0 10px 0;
-  background-color:#f2f2f2dd
+  background-color:#ffffff
 }
 
 .btnInModal{
@@ -67,16 +70,21 @@
   align-items:center;
 }
 
-.CreateTasksButton{
+.ShowCreateWindow{
+  outline:none;
+  height:30px;
+  width:55px;
+  border-radius:20px;
   border-color:#5498ab99;
   background-color:#5498ab99;
   color:#ffffff;
-  margin:auto 0 auto 250px;
+  margin:auto 0 auto 280px;
   cursor:pointer;
+  font-size:13px;
 }
 
-.CreateTasksButton:hover{
-  font-size:16px;
+.ShowCreateWindow:hover{
+  font-size:15px;
 }
 
 #overlay_create{
@@ -94,8 +102,16 @@
   justify-content: center;
 }
 
-.modalCreateTasks{
+.ModalCreateTasks{
   width:400px;
   height:400px;
   background-color:#ffffff;
+}
+
+.CreateTasksInput{
+  margin:0 0 0 50px;
+}
+
+.CreateTasksButton{
+  margin:0 0 0 50px;
 }

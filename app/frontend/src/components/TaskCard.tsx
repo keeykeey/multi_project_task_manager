@@ -30,7 +30,7 @@ interface EditTaskForm{
   id: number;
   name: string;
   deadline: string;
-  taskpriority: number;
+  taskpriority: number;//1,2,3
 }
 
 /*
@@ -46,24 +46,28 @@ const TaskCard: React.FC<Props> = (props) => {
   const priorityWords:string[] = ['Important','Noraml','Not so important']
 
   const task_card_style:React.CSSProperties={
-    margin:'3px 3px 3px 3px',
+    outline:'none',
+    margin:'0px 0px 0px 0px',
     width:'260px',
     height:'90%',
     //DBに(0,1,2ではなく)1,2,3で値を入れているから、インデックス番号として使う時にはマイナス１している。
     //hoverした時に色が濃くなるように、アルファ(+'99')を設定。
     backgroundColor:priorityColor[props.taskpriority-1]+'99',
     border:'none',
+    borderRadius:20,
     cursor:'pointer', 
   }
 
   const task_card_style_hover:React.CSSProperties={
-    margin:'3px 3px 3px 3px',
+    outline:'none',
+    margin:'0px 0px 0px 0px',
     width:'260px',
     height:'90%',
     //DBに(0,1,2ではなく)1,2,3で値を入れているから、インデックス番号として使う時にはマイナス１している。
     //hoverした時に色が濃くなるように、アルファ(+'99')を無くした。
     backgroundColor:priorityColor[props.taskpriority-1],
     border:'none',
+    borderRadius:20,
     cursor:'pointer', 
     fontSize:'1.1em',         
   }
@@ -229,7 +233,7 @@ const TaskCard: React.FC<Props> = (props) => {
               <div>Edit</div>
               <ul>
                 <input type='text' onChange={(e)=>handleTaskNameInput(e)} placeholder={props.text}/>
-                <input type='text' onChange={(e)=>handleDeadLineInput(e)} placeholder={props.deadline.slice(0,10)}/>
+                <input type='date' onChange={(e)=>handleDeadLineInput(e)} placeholder={props.deadline.slice(0,10)}/>
                 <select onChange={(e)=>handlePriorityInput(e)}>
                   <option value=''></option>
                   <option value='1'>{priorityWords[0]}</option>
