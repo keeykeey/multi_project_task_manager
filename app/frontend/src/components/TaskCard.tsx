@@ -42,7 +42,19 @@ const TaskCard: React.FC<Props> = (props) => {
     本当はcssのみで設定できた方が、シンプルで良いと思うが、TASK CARDの色をユーザーアクション、priorityに応じて動的に変えられる等にするためには、
     どうしてもtypescriptで書く必要があった。cssのみでかける方法が分かれば、書き直したい。
   */
-  const priorityColor:string[] = ['#dd4400','#0044dd','#44dd44']
+  const priorityColor:string[] = ['','#dd4400','#0044dd','#44dd44']
+　/* 
+        -------------------------------------
+        priorityColor   |   taskpriority(DB)
+        -------------------------------------
+        ''              |   
+        '#dd4400'       |   1
+        '#0044dd'       |   2
+        '#44dd44'       |   3
+        -------------------------------------
+        というマッピングになっているので、priorityColorの0要素目は''にしている。
+　　　　　taskpriorityに設定する値は、0スタートではなく1スタートという仕様にしている。
+  */
   const priorityWords:string[] = ['Important','Noraml','Not so important']
 
   const task_card_style:React.CSSProperties={
@@ -50,7 +62,6 @@ const TaskCard: React.FC<Props> = (props) => {
     margin:'0px 0px 0px 0px',
     width:'260px',
     height:'90%',
-    //DBに(0,1,2ではなく)1,2,3で値を入れているから、インデックス番号として使う時にはマイナス１している。
     //hoverした時に色が濃くなるように、アルファ(+'99')を設定。
     backgroundColor:priorityColor[props.taskpriority-1]+'99',
     border:'none',
