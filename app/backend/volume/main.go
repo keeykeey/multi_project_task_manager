@@ -9,6 +9,7 @@ import (
 
 func main(){
         http.HandleFunc("/users",api.GetUsers)
+        http.HandleFunc("/getusername",api.GetUserName)
         http.HandleFunc("/projects",api.GetProjects)
         http.HandleFunc("/tasks",api.GetTasks)
         http.HandleFunc("/posttasks",api.PostTasks)

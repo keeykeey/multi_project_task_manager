@@ -51,6 +51,34 @@ func GetUsers(w http.ResponseWriter,r *http.Request){
 
 }
 
+func GetUserName(w http.ResponseWriter,r * http.Request){
+        w.Header().Set("Content-Type","text/html")
+        w.Header().Set("Access-Control_Allow-Methods","GET")
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+
+        con := db.ConnectDb()
+        var uid int = auth.ListenAuthState(w,r)
+        var query string = "SELECT name from users WHERE id = $1"
+        rows,err1 := con.Query(query,uid)
+        if err1 != nil {
+                panic(err1)
+        }
+
+        var name string;
+        for rows.Next(){
+                err2 := rows.Scan(&name)
+                if err2 != nil {
+                        panic(err2)
+                }
+        }
+
+        defer rows.Close()
+        defer con.Close()
+        w.WriteHeader(http.StatusOK)
+        fmt.Fprintf(w,name)
+}
+
 func GetProjects(w http.ResponseWriter,r *http.Request){
         con := db.ConnectDb()
         
@@ -85,7 +113,6 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         json_response, _ := json.MarshalIndent(list,"","\t")
 
         w.Header().Set("Content-Type","application/json")
-        w.Header().Set("Access-Control-Allow-Headers","uid")
         w.Header().Set("Access-Control_Allow-Methods","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
