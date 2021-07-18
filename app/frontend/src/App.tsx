@@ -5,13 +5,40 @@ import Sidebar from './Sidebar'
 import Contents from './Contents'
 
 /*
+    InterFace
+*/
+interface Param{
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+  mode: 'no-cors' | 'cors' | 'same-origin',
+  credentials: 'include' | 'same-origin' | 'same-origin' | 'omit',
+}
+
+/*
     REACT-COMPONENT
 */
 const App: React.FC = () =>  {
   /*
-      HANDLE USER LOGIN
+      GET LOGIN USER NAME
   */
+  const [loginName,setLoginName] = useState<string|null>('')
+  function getLoginName(){
+    const url:string ='http://127.0.0.1:8080/getusername'
+    const param:Param={
+      method:'GET',
+      mode:'cors',
+      credentials:'include'
+    }
 
+    fetch(url,param)
+    .then(res=>res.text())
+    .then(text=>setLoginName(text))
+    .catch(err=>console.log('err',err))
+  }
+  getLoginName()
+
+  /*
+      GET PROJECT ID
+  */
   const [projectId,setProjectId] =useState<number|null>(null)
   function handleProjectChange(project_id:number){
     setProjectId(project_id)
@@ -45,8 +72,7 @@ const App: React.FC = () =>  {
       <div className='col'>
         <div className='header'>
           {/* HEADER */}
-          <Header user_id={100} 
-             user_name='testtest' 
+          <Header user_name={loginName} 
              is_show_menu_bar={isSmallWindowSize}
              handleMenuBarPushed={modalSideBar}/> 
         </div>

@@ -5,8 +5,7 @@ import { GoPerson } from 'react-icons/go';
 //https://react-icons.github.io/react-icons
 
 interface Props{
-  user_id: number;
-  user_name: string;
+  user_name: string |null;
   is_show_menu_bar : boolean | undefined;
   handleMenuBarPushed : Function;
 }
