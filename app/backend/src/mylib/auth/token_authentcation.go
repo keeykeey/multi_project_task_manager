@@ -113,6 +113,8 @@ func ListenAuthState(w http.ResponseWriter, r *http.Request)int{
 			panic(err3)
 		}
 	}
+	
+	defer con.Close()
 
 	return userid	
 }
