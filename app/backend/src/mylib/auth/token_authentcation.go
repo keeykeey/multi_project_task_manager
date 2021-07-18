@@ -10,7 +10,7 @@ import (
 	"mylib/db"
 )
 
-func TokenAuthenteicate(w http.ResponseWriter, r *http.Request){
+func GiveAuthToken(w http.ResponseWriter, r *http.Request){
 	/*
 		POSTを受け取り認証が成功したら,
 		１）　dbのtokensテーブルに1レコード追加しtoken情報を保存し、のちにstatefulな通信ができるようにする
@@ -64,7 +64,7 @@ func TokenAuthenteicate(w http.ResponseWriter, r *http.Request){
 	rows.Scan(&uid)
 
 	token := TokenGenerator(8)
-	expire := time.Now().Add(2 * time.Minute)//2分で有効期限が切れるトークンにする
+	expire := time.Now().Add(60 * 12 * time.Minute)//12時間で有効期限が切れるトークンにする
 	c := &http.Cookie{
 		Name: "token",
 		Value: token,
@@ -80,4 +80,39 @@ func TokenAuthenteicate(w http.ResponseWriter, r *http.Request){
 	fmt.Fprintf(w,strconv.Itoa(uid))
 
 	defer con.Close()
+}
+
+func ListenAuthState(w http.ResponseWriter, r *http.Request)int{
+	/*
+		１）リクエストでtokenを受け取り
+		２）sqlで受け取ったtokenをもつuseridを取得
+	*/
+
+	cookie,err1 := r.Cookie("token")
+	if err1 != nil {
+		return 0
+	}
+
+	if time.Now().Before(cookie.Expires){
+		return 0
+	}
+
+	con := db.ConnectDb()
+	
+	var query = "SELECT userid FROM tokens WHERE token = $1 "
+    var token string = cookie.Value
+	rows,err2 := con.Query(query,token)
+	if err2 != nil {
+		panic(err2)
+	}
+
+	var userid int ;
+	for rows.Next(){
+		err3 := rows.Scan(&userid)
+		if err3 != nil {
+			panic(err3)
+		}
+	}
+
+	return userid	
 }

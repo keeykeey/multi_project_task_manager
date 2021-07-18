@@ -8,6 +8,7 @@ import (
         "strconv"
         "mylib/db"
         "fmt"
+        "mylib/auth"
 )
 
 func GetUsers(w http.ResponseWriter,r *http.Request){
@@ -54,8 +55,7 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         con := db.ConnectDb()
         
         var uid int
-        var s = r.Header.Get("uid") //this returns type string. if you want to get s as type []string, use r.Header["uid"] instead.
-        uid, _ = strconv.Atoi(s)
+        uid = auth.ListenAuthState(w,r)
         var query = "SELECT id,name FROM projects WHERE userid = $1"// ORDER BY id ASC"
 
         rows,err := con.Query(query,uid)

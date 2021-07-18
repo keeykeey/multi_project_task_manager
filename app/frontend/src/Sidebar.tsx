@@ -2,8 +2,6 @@ import React, { useState, useEffect} from 'react';
 import ProjectButton from './components/ProjectButton'
 
 interface Props{
-  user_id: number;
-  user_name: string;
   handle_project_change:Function;
 }
 
@@ -16,13 +14,12 @@ interface Param  {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   mode: 'no-cors' | 'cors' | 'same-origin',
   credentials: 'include' | 'same-origin' | 'same-origin' | 'omit',
-  headers: {'uid':string}
 }
 
 const Sidebar: React.FC<Props> = (props) => {
   useEffect(()=>{
     fetchProjects(url,param)// eslint-disable-next-line react-hooks/exhaustive-deps
-  },[props.user_id])
+  },[])
 
   const [projects,setProjects] = useState<Projects[]>([])
 
@@ -30,7 +27,6 @@ const Sidebar: React.FC<Props> = (props) => {
     method:'GET', 
     mode:'cors',
     credentials:'include',
-    headers:{'uid':String(props.user_id)}
   }
 
   const url: string = 'http://127.0.0.1:8080/projects'

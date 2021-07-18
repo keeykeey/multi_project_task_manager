@@ -1,6 +1,7 @@
 import React, {useState,useEffect} from 'react';
 import './App.css' ;
 import TaskCard from './components/TaskCard';
+import CreateTasksButton from './components/CreateTasksButton'
 
 interface Props{
   project_id:number|null;
@@ -67,7 +68,10 @@ function Contents(props:Props){
 
   return (
     <div className='contents'>
-      <h3>{String(tasks[0])==='undefined' ? '' : 'Tasks'}</h3><hr/>
+      <h3 className='rows'>
+        {String(tasks[0])==='undefined' ? '' : 'Tasks' }     
+        {String(tasks[0])==='undefined' ?'':<CreateTasksButton userid={1} projectid={props.project_id} editInfoTrigger={editInfoTrigger}/>}   
+      </h3><hr/>
       {tasks.map(t=><div key={t.id}>
         <TaskCard id = {t.id}
                   text={t.name} 

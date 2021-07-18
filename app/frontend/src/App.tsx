@@ -5,33 +5,12 @@ import Sidebar from './Sidebar'
 import Contents from './Contents'
 
 /*
-    INTERFACE
-*/
-interface Users{
-  id: number,
-  name: string
-}
-
-/*
-    LOGIN
-*/
-function getLoginUser(){
-  const login_user:Users = {
-    id:3,
-    name:'testuser3'
-  }
-  return login_user
-}
-
-
-/*
     REACT-COMPONENT
 */
 const App: React.FC = () =>  {
   /*
       HANDLE USER LOGIN
   */
-  const user = getLoginUser()
 
   const [projectId,setProjectId] =useState<number|null>(null)
   function handleProjectChange(project_id:number){
@@ -66,8 +45,8 @@ const App: React.FC = () =>  {
       <div className='col'>
         <div className='header'>
           {/* HEADER */}
-          <Header user_id={user.id} 
-             user_name={user.name} 
+          <Header user_id={100} 
+             user_name='testtest' 
              is_show_menu_bar={isSmallWindowSize}
              handleMenuBarPushed={modalSideBar}/> 
         </div>
@@ -76,7 +55,7 @@ const App: React.FC = () =>  {
           {showModalSidebar ? 
             <div id='overlay1' onClick={modalSideBar}>
               <div className='slide' onClick={(e)=>e.stopPropagation()}>
-                <Sidebar user_id={user.id} user_name={user.name} handle_project_change={handleProjectChange}/>
+                <Sidebar handle_project_change={handleProjectChange}/>
               </div>
             </div>:
             ''
@@ -85,7 +64,7 @@ const App: React.FC = () =>  {
           {(isSmallWindowSize && projectId!==null )? 
             '' :
             <div className='sidebar'>
-              <Sidebar user_id={user.id} user_name={user.name} handle_project_change={handleProjectChange}/> 
+              <Sidebar handle_project_change={handleProjectChange}/> 
             </div> 
           }
 
