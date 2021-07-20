@@ -68,7 +68,7 @@ function Login(props:Props){
         fetch(url,param)
         .then(res=>{
             console.log('see if fetch succeeded...',res)
-        })
+        }).then(res=>window.location.href='http://127.0.0.1:3000')
     }
 
     return(
