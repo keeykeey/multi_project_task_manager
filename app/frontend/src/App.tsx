@@ -32,6 +32,11 @@ const App: React.FC = () =>  {
     fetch(url,param)
     .then(res=>res.text())
     .then(text=>setLoginName(text))
+    .then(res=>{
+      if(!loginName){
+        window.location.href='http://127.0.0.1:3000/login'
+      }
+    })
     .catch(err=>console.log('err',err))
   }
   getLoginName()

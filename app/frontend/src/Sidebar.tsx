@@ -37,6 +37,9 @@ const Sidebar: React.FC<Props> = (props) => {
     fetch(url,param)
     .then(res=>res.json())
     .then(json => {
+      if (!json){
+        return 0;
+      }
       for (var i:number=0 ; i<json.length ; i++){
         var p:Projects={
           id : json[i].Id,
