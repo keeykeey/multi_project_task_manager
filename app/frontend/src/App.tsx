@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import Login from './Login'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import Contents from './Contents'
@@ -32,11 +33,6 @@ const App: React.FC = () =>  {
     fetch(url,param)
     .then(res=>res.text())
     .then(text=>setLoginName(text))
-    .then(res=>{
-      if(!loginName){
-        window.location.href='http://127.0.0.1:3000/login'
-      }
-    })
     .catch(err=>console.log('err',err))
   }
   getLoginName()
@@ -81,6 +77,9 @@ const App: React.FC = () =>  {
              is_show_menu_bar={isSmallWindowSize}
              handleMenuBarPushed={modalSideBar}/> 
         </div>
+
+        {/*LoginName有無で表示を切り替え*/}
+        {loginName?
         <div className='row'>
           {/* SIDEBAR */}
           {showModalSidebar ? 
@@ -103,7 +102,10 @@ const App: React.FC = () =>  {
           <div className='contents'> 
             <Contents project_id={projectId} />
           </div>
-        </div>
+        </div>:
+        <Login/>}
+        {/*LoginName有無で表示を切り替え*/ }
+
       </div>
     </div>
     
