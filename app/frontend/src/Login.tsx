@@ -15,45 +15,56 @@ interface InputForm {
     password: string;
 }
 
-const cssRow:React.CSSProperties={
-  display:'flex',
-  flexDirection:'row'
-}
-
-const cssTextInput:React.CSSProperties={
-  width:'200px',
-  height:'30px',
-  fontSize:'18px',
-  borderWidth:'1px 1px 1px 1px',
-  borderRadius:'5px',
-  margin:'1px 0px 1px 0px',
-}
-
-const cssPwInput:React.CSSProperties={
-  width:'180px',
-  height:'30px',
-  fontSize:'18px',
-  borderWidth:'1px 0px 1px 1px',
-  borderRadius:'5px 0px 0px 5px',
-  margin:'1px 0px 1px 0px',
-}
-
-const cssEyeDiv:React.CSSProperties={
-    fontSize:'16px',
-    width:'20px',
-    height:'32px',
-    margin:'1px 0px 1px 0px',
-    borderRadius:'0px 5px 5px 0px',
-    borderWidth:'1px 1px 1px 0px',
-    borderStyle:'solid',
-    borderColor:'#000000 #30303099 #30303099 #ffffff',
-}
-
-const cssEye:React.CSSProperties={
-    margin:'8px 0px 8px auto',
-}
-
 function Login(){
+    const cssRow:React.CSSProperties={
+        display:'flex',
+        flexDirection:'row'
+    }
+      
+    const cssTextInput:React.CSSProperties={
+        width:'200px',
+        height:'30px',
+        fontSize:'18px',
+        borderWidth:'1px 1px 1px 1px',
+        borderRadius:'5px',
+        margin:'1px 0px 1px 0px',
+    }
+      
+    const cssPwInput:React.CSSProperties={
+        width:'180px',
+        height:'30px',
+        fontSize:'18px',
+        borderWidth:'1px 0px 1px 1px',
+        borderRadius:'5px 0px 0px 5px',
+        margin:'1px 0px 1px 0px',
+    }
+      
+    const cssEyeDiv:React.CSSProperties={
+        fontSize:'16px',
+        width:'20px',
+        height:'32px',
+        margin:'1px 0px 1px 0px',
+        borderRadius:'0px 5px 5px 0px',
+        borderWidth:'1px 1px 1px 0px',
+        borderStyle:'solid',
+        borderColor:'#000000 #30303099 #30303099 #ffffff',
+    }
+      
+    const cssEye:React.CSSProperties={
+        margin:'8px 0px 8px auto',
+        cursor:'pointer',
+    }
+
+    const cssLoginButton:React.CSSProperties={
+        width:205.5,
+        height:30,
+        borderRadius:'5px',
+        borderWidth:'1px 1px 1px 1px',
+        borderColor:'#000000 #30303099 #30303099 #000000',
+        backgroundColor:'#4488f4'
+    }
+      
+
     const [userName,setUserName] = useState<string>('testuser1')
     const [userPassword,setUserPassword] = useState<string>('pwoftest1')
     const [pwHiding,setPwHiding] = useState<boolean>(true)
@@ -108,7 +119,6 @@ function Login(){
     return(
         <div>
             <ul>
-                <h3>Login</h3>
                 <input style={cssTextInput}
                        onChange={(e)=>handleInputForm(e,'name')} 
                        placeholder='name'/><br/>
@@ -121,7 +131,7 @@ function Login(){
                     {pwHiding?<FaEye style={cssEye} onClick={handlePwHiding}/>:<FaEyeSlash style={cssEye} onClick={handlePwHiding}/>}         
                   </div>
                 </div>
-                <button onClick={userLogin}>Login</button>
+                <button style={cssLoginButton} onClick={userLogin}>Login</button>
             </ul>
             
         </div>
