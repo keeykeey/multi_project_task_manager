@@ -49,8 +49,10 @@ const App: React.FC = () =>  {
       HANDLE WINDOW DISPLAY
   */
   const [isSmallWindowSize,setIsSmallWindowSize] =useState<boolean|undefined>()
+  const [windowSize,setWindowSize] = useState<Number>(window.innerWidth)
   useEffect(()=>{
-    window.addEventListener('resize',()=>{
+    window.addEventListener('resize',(e)=>{
+      setWindowSize(window.innerWidth)
       if(window.innerWidth < 540){
         setIsSmallWindowSize(true)
       }else if(window.innerWidth >= 540){
@@ -74,8 +76,9 @@ const App: React.FC = () =>  {
         <div className='header'>
           {/* HEADER */}
           <Header user_name={loginName} 
-             is_show_menu_bar={isSmallWindowSize}
-             handleMenuBarPushed={modalSideBar}/> 
+                  windowSize = {windowSize}
+                  is_show_menu_bar={isSmallWindowSize}
+                  handleMenuBarPushed={modalSideBar}/> 
         </div>
 
         {/*LoginName有無で表示を切り替え*/}
