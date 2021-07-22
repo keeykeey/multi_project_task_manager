@@ -14,22 +14,6 @@
   cursor:pointer;
 }
 
-/*Header component*/
-.header{
-}
-
-.menu{
-  margin:2px 2px 2px 2px;
-  height:35px;
-  width:35px;
-  cursor:pointer;
-  color:#505050;
-}
-
-.header-message{
-  font-size:35px;
-}
-
 /*Sidebar component*/
 .sidebar{
   text-align: center;
@@ -48,6 +32,20 @@ transform: translateX(-50px);
 transform: translateX(0px);
 }
 }/*表示する時のみならず、非表示にする時のアニメーションも実装した方が良い*/
+
+#overlay{
+  /*　画面を覆う設定　*/
+    position:fixed;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    background-color:#ffffff80;
+  
+    /*　画面の中央に要素を表示させる設定　*/
+    display: flex;
+    align-items: left;
+  }
 
 #overlay1{
   /*　画面を覆う設定　*/
