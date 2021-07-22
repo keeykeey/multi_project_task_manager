@@ -1,12 +1,6 @@
 import React, { useState,ChangeEvent }from 'react';
 import './App.css';
-import {FaEye} from 'react-icons/fa'
-
-
-interface Props{
-    id: number;
-    name: string;
-}
+import {FaEye, FaEyeSlash} from 'react-icons/fa'
 
 interface Param  {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -20,8 +14,46 @@ interface InputForm {
     name: string;
     password: string;
 }
-  
-function Login(props:Props){
+
+const cssRow:React.CSSProperties={
+  display:'flex',
+  flexDirection:'row'
+}
+
+const cssTextInput:React.CSSProperties={
+  width:'200px',
+  height:'30px',
+  fontSize:'18px',
+  borderWidth:'1px 1px 1px 1px',
+  borderRadius:'5px',
+  margin:'1px 0px 1px 0px',
+}
+
+const cssPwInput:React.CSSProperties={
+  width:'180px',
+  height:'30px',
+  fontSize:'18px',
+  borderWidth:'1px 0px 1px 1px',
+  borderRadius:'5px 0px 0px 5px',
+  margin:'1px 0px 1px 0px',
+}
+
+const cssEyeDiv:React.CSSProperties={
+    fontSize:'16px',
+    width:'20px',
+    height:'32px',
+    margin:'1px 0px 1px 0px',
+    borderRadius:'0px 5px 5px 0px',
+    borderWidth:'1px 1px 1px 0px',
+    borderStyle:'solid',
+    borderColor:'#000000 #30303099 #30303099 #ffffff',
+}
+
+const cssEye:React.CSSProperties={
+    margin:'8px 0px 8px auto',
+}
+
+function Login(){
     const [userName,setUserName] = useState<string>('testuser1')
     const [userPassword,setUserPassword] = useState<string>('pwoftest1')
     const [pwHiding,setPwHiding] = useState<boolean>(true)
@@ -30,10 +62,12 @@ function Login(props:Props){
 
     function handleInputForm(event:ChangeEvent<HTMLInputElement>,mode:Mode){
         //https://qiita.com/natsuhiko/items/5d2a526a217e05162a0a
-        if (mode==='name'){
-            setUserName(event.target.value)
-        }else if(mode==='password'){
-            setUserPassword(event.target.value)
+        switch(mode){
+            case 'name':
+                setUserName(event.target.value)
+                break;
+            case 'password':
+                setUserPassword(event.target.value)
         }
     }
 
@@ -67,20 +101,26 @@ function Login(props:Props){
 
         fetch(url,param)
         .then(res=>{
-            console.log('see if fetch succeeded...',res)
+            console.log('success...',res)
         }).then(res=>window.location.href='http://127.0.0.1:3000')
     }
 
     return(
         <div>
-            <h1>Login Page</h1><hr/>
             <ul>
-                <input onChange={(e)=>handleInputForm(e,'name')} 
+                <h3>Login</h3>
+                <input style={cssTextInput}
+                       onChange={(e)=>handleInputForm(e,'name')} 
                        placeholder='name'/><br/>
-                <input type={pwHiding?'password':'text'} 
-                       onChange={(e)=>handleInputForm(e,'password')}
-                       placeholder='password'/>
-                    <FaEye className='FaEye' onClick={handlePwHiding}/><br/>
+                <div style={cssRow}>
+                  <input type={pwHiding?'password':'text'} 
+                         style={cssPwInput}
+                         onChange={(e)=>handleInputForm(e,'password')}
+                         placeholder='password'/>
+                  <div style={cssEyeDiv}>
+                    {pwHiding?<FaEye style={cssEye} onClick={handlePwHiding}/>:<FaEyeSlash style={cssEye} onClick={handlePwHiding}/>}         
+                  </div>
+                </div>
                 <button onClick={userLogin}>Login</button>
             </ul>
             
