@@ -40,7 +40,8 @@ const App: React.FC = () =>  {
   /*
       GET PROJECT ID
   */
-  const [projectId,setProjectId] =useState<number|null>(null)
+  //const [projectId,setProjectId] =useState<number|null>(null)
+  const [projectId,setProjectId] = useState<number|null>(null)
   function handleProjectChange(project_id:number){
     setProjectId(project_id)
   }
@@ -49,10 +50,12 @@ const App: React.FC = () =>  {
       HANDLE WINDOW DISPLAY
   */
   const [isSmallWindowSize,setIsSmallWindowSize] =useState<boolean|undefined>()
-  const [windowSize,setWindowSize] = useState<Number>(window.innerWidth)
+  const [windowWidth,setWindowWidth] = useState<number>(window.innerWidth)
+  const [windowHeight,setWindowHeight] = useState<number>(window.innerHeight)
   useEffect(()=>{
     window.addEventListener('resize',(e)=>{
-      setWindowSize(window.innerWidth)
+      setWindowWidth(window.innerWidth)
+      setWindowHeight(window.innerHeight)
       if(window.innerWidth < 540){
         setIsSmallWindowSize(true)
       }else if(window.innerWidth >= 540){
@@ -70,13 +73,22 @@ const App: React.FC = () =>  {
     }
   }
 
+  /*
+      CSS定義
+  */
+      const cssSidebar:React.CSSProperties={
+        height:windowHeight,
+        overflowY:'scroll',
+        textAlign:'center',
+      }    
+
   return (
     <div >
       <div className='col'>
         <div className='header'>
           {/* HEADER */}
           <Header user_name={loginName} 
-                  windowSize = {windowSize}
+                  windowWidth = {windowWidth}
                   is_show_menu_bar={isSmallWindowSize}
                   handleMenuBarPushed={modalSideBar}/> 
         </div>
@@ -88,7 +100,7 @@ const App: React.FC = () =>  {
           {showModalSidebar ? 
             <div id='overlay1' onClick={modalSideBar}>
               <div className='slide' onClick={(e)=>e.stopPropagation()}>
-                <Sidebar handle_project_change={handleProjectChange}/>
+                <Sidebar windowHeight={Number(windowHeight)} handle_project_change={handleProjectChange}/>
               </div>
             </div>:
             ''
@@ -96,8 +108,8 @@ const App: React.FC = () =>  {
 
           {(isSmallWindowSize && projectId!==null )? 
             '' :
-            <div className='sidebar'>
-              <Sidebar handle_project_change={handleProjectChange}/> 
+            <div style={cssSidebar}>
+              <Sidebar windowHeight={Number(windowHeight)} handle_project_change={handleProjectChange}/> 
             </div> 
           }
 
