@@ -21,7 +21,7 @@ interface Props{
 interface Param {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   mode: 'no-cors' | 'cors' | 'same-origin',
-  credentials: 'include' | 'same-origin' | 'same-origin' | 'omit',
+  credentials: 'include' | 'same-origin' | 'omit',
   headers:{'Content-Type':'application/json' | 'text/html' |'multipart/form-data'}|{'taskid':string},
   body: string | null
 }
@@ -118,15 +118,20 @@ const TaskCard: React.FC<Props> = (props) => {
   function giveModalStyle(e:any){
     const _x:number = e.clientX
     const _y:number = e.clientY
-    const width:number = 200
-    const height:number = 130
+    const width:number = 205
+    const height:number = 170
+    var _yTooBig:0|1 =0
+    if (_y>(window.innerHeight/2)){
+      _yTooBig=1
+    }
     const style:React.CSSProperties={
       width:width,
       height:height,
       position:'fixed',
-      top:_y-height,
-      left:_x-width,
+      top:_y-(_yTooBig*height)-2,
+      left:_x-width-2,
       backgroundColor:'#ffffff',
+      borderRadius:'20px',
       border:'0.1rem solid',
     }
     setModalStyle(style)
@@ -224,7 +229,7 @@ const TaskCard: React.FC<Props> = (props) => {
         {showModalDeleteWindow?
           <div id='overlay2' onClick={modalDeleteWindow}>
             <div style={modalStyle} onClick={(e)=>e.stopPropagation()}>
-              <p ><GoAlert/>do you really delete it?</p>
+              <p ><GoAlert/>本当に削除しますか？</p>
               <button className='btnInModal' onClick={deleteTask}>yes</button>
               <button className='btnInModal' onClick={modalDeleteWindow}>no</button>
             </div>
@@ -241,7 +246,7 @@ const TaskCard: React.FC<Props> = (props) => {
         {showModalEditWindow?
           <div id='overlay3' onClick={modalEditWindow}>
             <div style={modalStyle} onClick={(e)=>e.stopPropagation()}>
-              <div>Edit</div>
+              <p>編集画面</p>
               <ul>
                 <input type='text' onChange={(e)=>handleTaskNameInput(e)} placeholder={props.text}/>
                 <input type='date' onChange={(e)=>handleDeadLineInput(e)} placeholder={props.deadline.slice(0,10)}/>
