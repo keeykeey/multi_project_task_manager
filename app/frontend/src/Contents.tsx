@@ -24,9 +24,9 @@ interface Param  {
 function Contents(props:Props){
   useEffect(()=>{
     fetchTasks(url,param)// eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchProjectName()
+    console.log('contents useeffect')
   },[props.project_id])
-
-  const [tasks,setTasks] = useState<Tasks[]>([])
 
   const param:Param = {
     method: 'GET',
@@ -34,6 +34,8 @@ function Contents(props:Props){
     credentials: 'include',
     headers: {'projectid':String(props.project_id)}
   }
+
+  const [tasks,setTasks] = useState<Tasks[]>([])
 
   const url: string = 'http://127.0.0.1:8080/tasks'
 
@@ -57,6 +59,22 @@ function Contents(props:Props){
     }).then(res=>setTasks(tasks_array))
   }
 
+  const [pname,setPname] = useState<string>('')
+  function fetchProjectName(){
+    const param:Param = {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include',
+      headers:{'projectid':String(props.project_id)}
+    }  
+    const url:string = 'http://127.0.0.1:8080/getprojectname'
+
+    fetch(url,param)
+    .then(res=>res.text())
+    .then(text=>setPname(text))
+    .catch(err=>console.log('failed...',err))
+  }
+
   function editInfoTrigger(){
     /*
       TaskCardにpropsとして渡す。
@@ -69,8 +87,8 @@ function Contents(props:Props){
   return (
     <div className='contents'>
       <h3 className='rows'>
-        {String(tasks[0])==='undefined' ? '' : 'Tasks' }     
-        {String(tasks[0])==='undefined' ?'':<CreateTasksButton userid={1} projectid={props.project_id} editInfoTrigger={editInfoTrigger}/>}   
+        {pname+'のタスク'}
+        <CreateTasksButton userid={1} projectid={props.project_id} editInfoTrigger={editInfoTrigger}/>
       </h3><hr/>
       {tasks.map(t=><div key={t.id}>
         <TaskCard id = {t.id}
