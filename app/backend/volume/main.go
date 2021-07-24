@@ -9,12 +9,19 @@ import (
 
 func main(){
         http.HandleFunc("/users",api.GetUsers)
+
+        http.HandleFunc("/auth",auth.GiveAuthToken)
+        http.HandleFunc("/logout",auth.RemoveToken)
         http.HandleFunc("/getusername",api.GetUserName)
+
         http.HandleFunc("/projects",api.GetProjects)
+        http.HandleFunc("/postprojects",api.PostProjects)
+        http.HandleFunc("/putprojects",api.PutProjects)
+        http.HandleFunc("/deleteprojects",api.DeleteProjects)
+
         http.HandleFunc("/tasks",api.GetTasks)
         http.HandleFunc("/posttasks",api.PostTasks)
         http.HandleFunc("/puttasks", api.PutTasks)
         http.HandleFunc("/deletetasks",api.DeleteTasks)
-        http.HandleFunc("/auth",auth.GiveAuthToken)
         log.Fatal(http.ListenAndServe(":8080",nil))
 }
