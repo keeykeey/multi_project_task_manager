@@ -36,6 +36,7 @@ const CreateProjectsButton: React.FC<Props> = (props) => {
     border:'none',
     borderRadius:'20px',
     cursor:'pointer',
+    margin:'2px auto auto auto'
   }
   const [cssProjectBtn,setCssProjectBtn] = useState<React.CSSProperties>(btnStyle)
 
@@ -49,6 +50,7 @@ const CreateProjectsButton: React.FC<Props> = (props) => {
       border:'none',
       borderRadius:'20px',
       cursor:'pointer',
+      margin:'2px auto auto auto',
       fontSize:'16px'
     }  
     setCssProjectBtn(style)
@@ -77,15 +79,22 @@ const CreateProjectsButton: React.FC<Props> = (props) => {
   function giveModalStyle(e:any){//本当は明確な型を与えるべき
     const _x = e.clientX
     const _y = e.clientY
+    const width:number = 250
+    const height:number = 120
+    var _yTooBig:0|1 =0
+    if (_y>(window.innerHeight/2)){
+      _yTooBig=1
+    }
+
     const style:React.CSSProperties={
-      top:_y,
+      top:_y-(_yTooBig*height),
       left:_x,
       position:'fixed',
-      width:'250px',
-      height:'180px',
+      width:width,
+      height:height,
       backgroundColor:'#ffffff',
       borderRadius:'20px 20px 20px 20px',
-      alignItems:'left'
+      alignItems:'left',
     }
     setModalStyle(style)
   }
