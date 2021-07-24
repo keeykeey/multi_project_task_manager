@@ -120,6 +120,90 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         w.Write(json_response)
 }
 
+func PostProjects(w http.ResponseWriter, r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","POST")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control-Allow-Headers",headers)
+
+        var uid int = auth.ListenAuthState(w,r)
+        type Projects struct {
+                Name string
+        }
+        
+        var p Projects
+        
+        err := json.NewDecoder(r.Body).Decode(&p)
+        if err != nil {
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprintf(w,"err")
+                fmt.Print(w,p.Name)
+                return
+        }
+
+        con := db.ConnectDb()
+
+        var query string = "INSERT INTO projects(name,userid) VALUES($1,$2)"
+        con.Exec(query,p.Name,uid)
+
+        fmt.Fprintf(w,"working?")
+        fmt.Print(w,p.Name)
+        fmt.Fprintf(w,strconv.Itoa(uid))
+
+        defer con.Close()
+}
+
+func PutProjects(w http.ResponseWriter, r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","PUT")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control-Allow-Headers",headers)
+
+        con := db.ConnectDb()
+
+        type Projects struct {
+                Id int
+                Name string
+        }
+
+        var p Projects
+
+        err := json.NewDecoder(r.Body).Decode(&p)
+        if err != nil {
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprintf(w,"ERROR : " + err.Error())
+        }//エラーハンドリングはもう少し練りたいところ。フロント側で、status-codeに応じてちゃんとエラー処理を分岐できるか。
+
+        var query = "UPDATE projects SET name=$1 WHERE id=$2"
+        con.Exec(query,p.Name,p.Id)
+
+        w.WriteHeader(http.StatusOK)
+
+        defer con.Close()
+
+}
+
+func DeleteProjects(w http.ResponseWriter, r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","DELETE")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control-Allow-Headers",headers)
+
+        var projectid int
+        var s = r.Header.Get("projectid")
+        projectid, _ = strconv.Atoi(s)
+
+        con := db.ConnectDb()
+
+        var query = "DELETE FROM projects WHERE id=$1"
+        con.Exec(query,projectid)
+
+        defer con.Close()
+}
+
 func GetTasks(w http.ResponseWriter,r *http.Request){
         con := db.ConnectDb()
         
@@ -165,9 +249,6 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         w.Write(json_response)
 }
 
-/*
-        あとでこれをベースにしてtaskの新規作成用apiを作る。
-*/
 func PostTasks(w http.ResponseWriter,r *http.Request){
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Methods","POST")
