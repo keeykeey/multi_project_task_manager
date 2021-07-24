@@ -31,12 +31,30 @@ function LogoutButton(){
         height:'30px',
         backgroundColor:'#4488f4',
         cursor:'pointer',
+        fontSize:'14px',
     }
+
+    const replacedStyle:React.CSSProperties={
+        borderRadius:'20px',
+        border:'none',
+        width:'80px',
+        height:'30px',
+        backgroundColor:'#4488f4',
+        cursor:'pointer',
+        fontSize:'18px',
+    }
+
     const [buttonStyle, setButtonStyle] = useState<React.CSSProperties>(defaultStyle)
+    function hoverLogoutBtn(){
+        setButtonStyle(replacedStyle)
+    }
+    function leaveLogoutBtn(){
+        setButtonStyle(defaultStyle)
+    }
  
     return(
         <div>
-          <button style={buttonStyle} onClick={logout} >Logout</button>           
+          <button style={buttonStyle} onClick={logout} onMouseEnter={hoverLogoutBtn} onMouseLeave={leaveLogoutBtn}>Logout</button>           
         </div>
     )
 }
