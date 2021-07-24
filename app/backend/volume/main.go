@@ -15,6 +15,7 @@ func main(){
         http.HandleFunc("/getusername",api.GetUserName)
 
         http.HandleFunc("/projects",api.GetProjects)
+        http.HandleFunc("/getprojectname",api.GetProjectName)
         http.HandleFunc("/postprojects",api.PostProjects)
         http.HandleFunc("/putprojects",api.PutProjects)
         http.HandleFunc("/deleteprojects",api.DeleteProjects)

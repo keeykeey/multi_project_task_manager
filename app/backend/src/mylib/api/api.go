@@ -120,6 +120,38 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         w.Write(json_response)
 }
 
+func GetProjectName(w http.ResponseWriter,r * http.Request){
+        w.Header().Set("Content-Type","text/html")
+        w.Header().Set("Access-Control_Allow-Methods","GET")
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        w.Header().Set("Access-Control-Allow-Headers","projectid")
+
+        var pid int
+        s := r.Header.Get("projectid")
+        pid,_ = strconv.Atoi(s)
+        var query string = "SELECT name from projects WHERE id = $1"
+
+        con := db.ConnectDb()
+        rows,err1 := con.Query(query,pid)
+        if err1 != nil {
+                panic(err1)
+        }
+
+        var name string;
+        for rows.Next(){
+                err2 := rows.Scan(&name)
+                if err2 != nil {
+                        panic(err2)
+                }
+        }
+
+        defer rows.Close()
+        defer con.Close()
+        w.WriteHeader(http.StatusOK)
+        fmt.Fprintf(w,name)
+}
+
 func PostProjects(w http.ResponseWriter, r *http.Request){
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Methods","POST")
