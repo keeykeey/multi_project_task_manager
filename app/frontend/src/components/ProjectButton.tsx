@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import './components.css';
 import '../App.css';
+import { GoAlert } from 'react-icons/go';
 
 /*
     PROPS
@@ -93,7 +94,7 @@ const ProjectButton: React.FC<Props> = (props) => {
       left:_x,//クリック位置より少しずらしてモーダルを表示した方が、操作性が快適だと思うため-3した
       position:'fixed',
       width:width,
-      height:'180px',
+      height:height,
       backgroundColor:'#ffffff',
       borderRadius:'20px 20px 20px 20px',
       alignItems:'left'
@@ -208,7 +209,7 @@ const ProjectButton: React.FC<Props> = (props) => {
             {l2modal?
               <div id='overlay1' onClick={switchL2ModalMode}>
               <div style={cssDeleteAlert} onClick={(e)=>e.stopPropagation()}>
-                <p>本当に削除しますか？</p>
+                <p><GoAlert/>本当に削除しますか？</p>
                 <button style={cssDeleteBtn} onClick={deleteProject}>yes</button>
                 <button style={cssDeleteBtn} onClick={switchL2ModalMode}>no</button>
               </div>
