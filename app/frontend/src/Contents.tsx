@@ -87,7 +87,7 @@ function Contents(props:Props){
   return (
     <div className='contents'>
       <h3 className='rows'>
-        {pname+'のタスク'}
+        {props.project_id?pname+'のタスク':'タスクを選択してください'}
         <CreateTasksButton userid={1} projectid={props.project_id} editInfoTrigger={editInfoTrigger}/>
       </h3><hr/>
       {tasks.map(t=><div key={t.id}>
