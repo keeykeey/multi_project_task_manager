@@ -2,19 +2,20 @@ import React, { useState, MouseEvent } from 'react';
 import { CgMenuGridR } from 'react-icons/cg';
 import { GoPerson } from 'react-icons/go';
 //https://react-icons.github.io/react-icons
+import AccountNavigator from './components/AccountNavigator'
 import Logout from './components/Logout'
 
 interface Props{
   user_name: string |null;
-  windowSize: Number;
+  windowWidth: Number;
   is_show_menu_bar : boolean | undefined;
   handleMenuBarPushed : Function;
 }
 
 const Header: React.FC<Props> = (props) =>{
-  const cssRow:React.CSSProperties={
-    display:'flex',
-    flexDirection:'row',
+  const appIcon:React.CSSProperties={
+    height:'35px',
+    width:'35px',
   }
   
   const cssMenu:React.CSSProperties={
@@ -29,7 +30,7 @@ const Header: React.FC<Props> = (props) =>{
   }
   
   const cssPerson:React.CSSProperties={
-    margin:`0 0 0 ${Number(props.windowSize)-310}px`,
+    margin:`0 0 0 ${Number(props.windowWidth)-310}px`,
     cursor:'pointer',
   }
 
@@ -53,19 +54,20 @@ const Header: React.FC<Props> = (props) =>{
     const _y:number = e.clientY
     
     const style:React.CSSProperties={
-      width:String(width),
+      width:String(width)+'px',
       height:String(height)+'px',
       position:'fixed',
       top: _y+2 ,
       left: _x-width,
       backgroundColor:'#ffffff00',
-    }
+      textAlign:'right',
+    }  
     setModalStyle(style)
   }
-
+  
   return (
-    <div >
-      <div style={cssRow}>
+    <div>
+      <div>
         {props.is_show_menu_bar ? < CgMenuGridR style={cssMenu} onClick={()=>props.handleMenuBarPushed()}/>:''}
         <div style={cssHeaderMessage}>
 
@@ -78,13 +80,14 @@ const Header: React.FC<Props> = (props) =>{
                        switchModal()
                        giveModalStyle(e)}}/>
            </div>:
-           'Please Login'}
+           <div><img style={appIcon} src='./appicon.jpg'></img>Please Login</div> }
           {/* ログイン状態に応じてヘッダーの表示を切り替え*/}
 
           {/* Personアイコンクリックでモーダル画面切り替え */}
           {showModal?
-          <div id='overlay' onClick={switchModal}>
-            <div style={modalStyle} >
+          <div id='overlay_white' onClick={switchModal}>
+            <div style={modalStyle} onClick={(e)=>e.stopPropagation()}>
+              <AccountNavigator/>
               <Logout/>
             </div>
           </div>:
