@@ -135,7 +135,7 @@ function AccountNavigator<React>(){
       mode: 'cors',
       credentials: 'include',
       headers:{'Content-Type':'application/json'},
-      body: ''  
+      body: JSON.stringify(new_name)
     }      
     
     fetch(url,param)
