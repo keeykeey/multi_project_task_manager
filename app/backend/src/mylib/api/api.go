@@ -51,7 +51,7 @@ func GetUsers(w http.ResponseWriter,r *http.Request){
 
 }
 
-func GetUserName(w http.ResponseWriter,r * http.Request){
+func GetUserName(w http.ResponseWriter,r *http.Request){
         w.Header().Set("Content-Type","text/html")
         w.Header().Set("Access-Control_Allow-Methods","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
@@ -77,6 +77,38 @@ func GetUserName(w http.ResponseWriter,r * http.Request){
         defer con.Close()
         w.WriteHeader(http.StatusOK)
         fmt.Fprintf(w,name)
+}
+
+func PutUserName(w http.ResponseWriter, r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","PUT")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control-Allow-Headers",headers)
+
+        con := db.ConnectDb()
+
+        var uid int
+        uid = auth.ListenAuthState(w,r)
+
+        type Users struct {
+                Name string
+        }
+
+        var u Users
+        err := json.NewDecoder(r.Body).Decode(&u)
+        if err != nil {
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprintf(w,"ERROR : " + err.Error())
+                return
+        }//エラーハンドリングはもう少し練りたいところ。フロント側で、status-codeに応じてちゃんとエラー処理を分岐できるか。
+
+        var query = "UPDATE users SET name=$1 WHERE id=$2"
+        con.Exec(query,u.Name,uid)
+
+        w.WriteHeader(http.StatusOK)
+
+        defer con.Close()
 }
 
 func GetProjects(w http.ResponseWriter,r *http.Request){
@@ -120,7 +152,7 @@ func GetProjects(w http.ResponseWriter,r *http.Request){
         w.Write(json_response)
 }
 
-func GetProjectName(w http.ResponseWriter,r * http.Request){
+func GetProjectName(w http.ResponseWriter,r *http.Request){
         w.Header().Set("Content-Type","text/html")
         w.Header().Set("Access-Control_Allow-Methods","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
