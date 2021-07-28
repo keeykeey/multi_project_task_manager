@@ -25,6 +25,7 @@ function AccountNavigator<React>(){
     backgroundColor:'#459915',
     border:'none',
     margin:'0 0 0 0',
+    cursor:'pointer',
     fontSize:'14px',
   }
 
@@ -37,6 +38,7 @@ function AccountNavigator<React>(){
     backgroundColor:'#459915',
     border:'none',
     margin:'0 0 0 0',
+    cursor:'pointer',
     fontSize:'18px',
   }
 
@@ -78,12 +80,14 @@ function AccountNavigator<React>(){
   }
 
   const indexStyle:React.CSSProperties = {
+    outline:'none',
     width:'280px',
     height:'35px',
     fontSize:'14px',
   }
 
   const inputStyle:React.CSSProperties = {
+    outline:'none',
     width:'240px',
     height:'30px',
   }
