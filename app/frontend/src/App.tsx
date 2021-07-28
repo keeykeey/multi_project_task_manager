@@ -88,6 +88,7 @@ const App: React.FC = () =>  {
         <div className='header'>
           {/* HEADER */}
           <Header user_name={loginName} 
+                  listenAccountInfoChange={getLoginName}
                   windowWidth = {windowWidth}
                   is_show_menu_bar={isSmallWindowSize}
                   handleMenuBarPushed={modalSideBar}/> 

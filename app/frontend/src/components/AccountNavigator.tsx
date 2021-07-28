@@ -1,4 +1,13 @@
 import React, {useState} from "react";
+import { isPropertySignature } from "typescript";
+
+/*
+    PROPS
+*/
+
+interface Props{
+  listenAccountInfoChange:Function
+}
 
 interface Param {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -12,7 +21,7 @@ interface NewName{
   name:string;
 }
 
-function AccountNavigator<React>(){
+function AccountNavigator<React>(props:Props){
   /*
       プロフィール編集画面呼び出しのボタン
   */
@@ -144,6 +153,8 @@ function AccountNavigator<React>(){
     
     fetch(url,param)
     .then(res=>console.log('success...',res))
+    .then(res=>setTimeout(onClickBtn,300))
+    .then(res=>props.listenAccountInfoChange())
     .catch(err=>console.log('err...',err))
   }
 

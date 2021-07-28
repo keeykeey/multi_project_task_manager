@@ -7,6 +7,7 @@ import Logout from './components/Logout'
 
 interface Props{
   user_name: string |null;
+  listenAccountInfoChange: Function;
   windowWidth: Number;
   is_show_menu_bar : boolean | undefined;
   handleMenuBarPushed : Function;
@@ -80,14 +81,14 @@ const Header: React.FC<Props> = (props) =>{
                        switchModal()
                        giveModalStyle(e)}}/>
            </div>:
-           <div><img style={appIcon} src='./appicon.jpg'></img>Please Login</div> }
+           <div><img style={appIcon} src='./appicon.jpg' alt='img'></img>Please Login</div> }
           {/* ログイン状態に応じてヘッダーの表示を切り替え*/}
 
           {/* Personアイコンクリックでモーダル画面切り替え */}
           {showModal?
           <div id='overlay_white' onClick={switchModal}>
             <div style={modalStyle} onClick={(e)=>e.stopPropagation()}>
-              <AccountNavigator/>
+              <AccountNavigator listenAccountInfoChange={props.listenAccountInfoChange}/>
               <Logout/>
             </div>
           </div>:
