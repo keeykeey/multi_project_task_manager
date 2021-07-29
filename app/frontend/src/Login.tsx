@@ -61,10 +61,43 @@ function Login(){
         borderRadius:'5px',
         borderWidth:'1px 1px 1px 1px',
         borderColor:'#000000 #30303099 #30303099 #000000',
-        backgroundColor:'#4488f4'
+        backgroundColor:'#4488f4',
+        cursor:'pointer',
     }
-      
+    const cssLoginButtonHover:React.CSSProperties={
+        width:205.5,
+        height:30,
+        borderRadius:'5px',
+        borderWidth:'1px 1px 1px 1px',
+        borderColor:'#000000 #30303099 #30303099 #000000',
+        backgroundColor:'#4488f499',
+        cursor:'pointer',
+    }
+    const [loginButtonStyle,setLoginButtonStyle] = useState<React.CSSProperties>(cssLoginButton)
 
+    const cssCreateAccount:React.CSSProperties={
+        margin:'50px auto auto auto',
+        width:205.5,
+        height:30,
+        borderRadius:'5px',
+        borderWidth:'1px 1px 1px 1px',
+        borderColor:'#000000 #30303099 #30303099 #000000',
+        backgroundColor:'#efefef',
+        cursor:'pointer',
+    }
+    const cssCreateAccountHover:React.CSSProperties={
+        margin:'50px auto auto auto',
+        width:205.5,
+        height:30,
+        borderRadius:'5px',
+        borderWidth:'1px 1px 1px 1px',
+        borderColor:'#000000 #30303099 #30303099 #000000',
+        backgroundColor:'#efefef99',
+        cursor:'pointer',
+    }
+    const [createAcountStyle,setCreateAcountStyle] = useState<React.CSSProperties>(cssCreateAccount)
+
+    
     const [userName,setUserName] = useState<string>('testuser1')
     const [userPassword,setUserPassword] = useState<string>('pwoftest1')
     const [pwHiding,setPwHiding] = useState<boolean>(true)
@@ -116,6 +149,10 @@ function Login(){
         }).then(res=>window.location.href='http://127.0.0.1:3000')
     }
 
+    function createAccount(){
+        window.location.href='http://127.0.0.1:3000/signup'
+    }
+
     return(
         <div>
             <ul>
@@ -132,8 +169,9 @@ function Login(){
                   </div>
                 </div>
                 <button style={cssLoginButton} onClick={userLogin}>Login</button>
+                <br/>
+                <button style={cssCreateAccount} onClick={createAccount}>Create Account</button>
             </ul>
-            
         </div>
     )
 }
