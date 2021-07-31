@@ -15,22 +15,61 @@ interface InputForm {
     password: string;
 }
 
+interface FunctionModeChange {
+    css: 'default' | 'onCursor',
+    text:'name' | 'password'
+}
+
 function Login(){
     const cssRow:React.CSSProperties={
         display:'flex',
-        flexDirection:'row'
+        flexDirection:'row',
+        width:'202px'
     }
-      
-    const cssTextInput:React.CSSProperties={
+
+    /*
+        名前入力フォーム
+    */
+    const default1:React.CSSProperties={
+        outline:'none',
         width:'200px',
         height:'30px',
         fontSize:'18px',
         borderWidth:'1px 1px 1px 1px',
         borderRadius:'5px',
         margin:'1px 0px 1px 0px',
-    }
-      
-    const cssPwInput:React.CSSProperties={
+    }     
+
+    const onCursor1:React.CSSProperties={
+        outline:'none',
+        width:'198px',
+        height:'28px',
+        fontSize:'18px',
+        borderWidth:'2px 2px 2px 2px',
+        borderRadius:'5px',
+        margin:'1px 0px 1px 0px',
+    } 
+
+    const [textInputStyle,setTextInputStyle] = useState<React.CSSProperties>(default1)
+    function giveTextInputCssStyle(mode:FunctionModeChange["css"]){
+
+        switch (mode){
+            case 'default':
+                setTextInputStyle(default1)
+                break;
+            case 'onCursor':
+                setTextInputStyle(onCursor1)
+                break;
+            default:
+                break;
+        }        
+    }    
+
+    /*
+        PW入力フォーム
+    */
+    const default2:React.CSSProperties={
+        outline:'none',
         width:'180px',
         height:'30px',
         fontSize:'18px',
@@ -38,8 +77,35 @@ function Login(){
         borderRadius:'5px 0px 0px 5px',
         margin:'1px 0px 1px 0px',
     }
-      
-    const cssEyeDiv:React.CSSProperties={
+
+    const onCursor2:React.CSSProperties={
+        outline:'none',
+        width:'178px',
+        height:'28px',
+        fontSize:'18px',
+        borderWidth:'2px 0px 2px 2px',
+        borderRadius:'5px 0px 0px 5px',
+        margin:'1px 0px 1px 0px',
+    }
+
+    const [pwInputStyle,setPwInputStyle]=useState<React.CSSProperties>(default2)
+    function givePwInputCssStyle(mode:FunctionModeChange["css"]){
+        switch (mode){
+            case 'default':
+                setPwInputStyle(default2)
+                break;
+            case 'onCursor':
+                setPwInputStyle(onCursor2)
+                break;
+            default:
+                break;
+        }        
+    }  
+    
+    /*
+        PWマスクアイコン
+    */
+    const default3:React.CSSProperties={
         fontSize:'16px',
         width:'20px',
         height:'32px',
@@ -49,72 +115,35 @@ function Login(){
         borderStyle:'solid',
         borderColor:'#000000 #30303099 #30303099 #ffffff',
     }
-      
+    const onCursor3:React.CSSProperties={
+        fontSize:'16px',
+        width:'18px',
+        height:'30px',
+        margin:'1px 0px 1px 0px',
+        borderRadius:'0px 5px 5px 0px',
+        borderWidth:'2px 2px 2px 0px',
+        borderStyle:'solid',
+        borderColor:'#000000 #30303099 #30303099 #ffffff',
+    }
+    const [iconEyeStyle,setIconEyeStyle]=useState<React.CSSProperties>(default3)
+    function giveIconEyeCssStyle(mode:FunctionModeChange["css"]){
+        switch (mode){
+            case 'default':
+                setIconEyeStyle(default3)
+                break;
+            case 'onCursor':
+                setIconEyeStyle(onCursor3)
+                break;
+            default:
+                break;
+        }        
+    }  
+    
     const cssEye:React.CSSProperties={
         margin:'8px 0px 8px auto',
         cursor:'pointer',
     }
-
-    const cssLoginButton:React.CSSProperties={
-        width:205.5,
-        height:30,
-        borderRadius:'5px',
-        borderWidth:'1px 1px 1px 1px',
-        borderColor:'#000000 #30303099 #30303099 #000000',
-        backgroundColor:'#4488f4',
-        cursor:'pointer',
-    }
-    const cssLoginButtonHover:React.CSSProperties={
-        width:205.5,
-        height:30,
-        borderRadius:'5px',
-        borderWidth:'1px 1px 1px 1px',
-        borderColor:'#000000 #30303099 #30303099 #000000',
-        backgroundColor:'#4488f499',
-        cursor:'pointer',
-    }
-    const [loginButtonStyle,setLoginButtonStyle] = useState<React.CSSProperties>(cssLoginButton)
-
-    const cssCreateAccount:React.CSSProperties={
-        margin:'50px auto auto auto',
-        width:205.5,
-        height:30,
-        borderRadius:'5px',
-        borderWidth:'1px 1px 1px 1px',
-        borderColor:'#000000 #30303099 #30303099 #000000',
-        backgroundColor:'#efefef',
-        cursor:'pointer',
-    }
-    const cssCreateAccountHover:React.CSSProperties={
-        margin:'50px auto auto auto',
-        width:205.5,
-        height:30,
-        borderRadius:'5px',
-        borderWidth:'1px 1px 1px 1px',
-        borderColor:'#000000 #30303099 #30303099 #000000',
-        backgroundColor:'#efefef99',
-        cursor:'pointer',
-    }
-    const [createAcountStyle,setCreateAcountStyle] = useState<React.CSSProperties>(cssCreateAccount)
-
-    
-    const [userName,setUserName] = useState<string>('testuser1')
-    const [userPassword,setUserPassword] = useState<string>('pwoftest1')
     const [pwHiding,setPwHiding] = useState<boolean>(true)
-
-    type Mode = 'name' | 'password'
-
-    function handleInputForm(event:ChangeEvent<HTMLInputElement>,mode:Mode){
-        //https://qiita.com/natsuhiko/items/5d2a526a217e05162a0a
-        switch(mode){
-            case 'name':
-                setUserName(event.target.value)
-                break;
-            case 'password':
-                setUserPassword(event.target.value)
-        }
-    }
-
     function handlePwHiding(){
         switch (pwHiding){
             case true:
@@ -124,6 +153,43 @@ function Login(){
                 setPwHiding(true);
                 break;
         }
+    }
+
+    /*
+        LOGIN ボタン
+    */
+    const default4:React.CSSProperties={
+        width:202,
+        height:30,
+        borderRadius:'5px',
+        borderWidth:'1px 1px 1px 1px',
+        borderColor:'#000000 #30303099 #30303099 #000000',
+        backgroundColor:'#4488f4ee',
+        cursor:'pointer',
+    }
+
+    const onCursor4:React.CSSProperties={
+        width:202,
+        height:30,
+        borderRadius:'5px',
+        borderWidth:'1px 1px 1px 1px',
+        borderColor:'#000000 #30303099 #30303099 #000000',
+        backgroundColor:'#4488f4',
+        cursor:'pointer',
+    }
+
+    const [loginButtonStyle,setLoginButtonStyle] = useState<React.CSSProperties>(default4)
+    function giveLoginButtonCssStyle(mode:FunctionModeChange["css"]){
+        switch (mode){
+            case 'default':
+                setLoginButtonStyle(default4)
+                break;
+            case 'onCursor':
+                setLoginButtonStyle(onCursor4)
+                break;
+            default:
+                break;
+        }        
     }
 
     function userLogin(){
@@ -149,28 +215,104 @@ function Login(){
         }).then(res=>window.location.href='http://127.0.0.1:3000')
     }
 
+    /*
+        CREATE ACCOUNT ボタン
+    */
+    const default5:React.CSSProperties={
+        outline:'none',
+        margin:'50px auto auto auto',
+        width:202,
+        height:30,
+        borderRadius:'5px',
+        borderWidth:'1px 1px 1px 1px',
+        borderColor:'#000000 #30303099 #30303099 #000000',
+        backgroundColor:'#dfdfdfbb',
+        cursor:'pointer',
+    }
+
+    const onCursor5:React.CSSProperties={
+        outline:'none',
+        margin:'50px auto auto auto',
+        width:202,
+        height:30,
+        borderRadius:'5px',
+        borderWidth:'1px 1px 1px 1px',
+        borderColor:'#000000 #30303099 #30303099 #000000',
+        backgroundColor:'#dfdfdf',
+        cursor:'pointer',
+    }
+
+    const [createAccountStyle,setCreateAcountStyle] = useState<React.CSSProperties>(default5)
+    function giveCreateAccountStyle(mode:FunctionModeChange["css"]){
+        switch(mode){
+            case 'default':
+                setCreateAcountStyle(default5)
+                break;
+            case 'onCursor':
+                setCreateAcountStyle(onCursor5)
+                break;
+            default:
+                break;
+        }
+    }
+    
     function createAccount(){
         window.location.href='http://127.0.0.1:3000/signup'
     }
 
+    /*
+        HANDLE TEXT & PW INPUT
+    */
+    const [userName,setUserName] = useState<string>('testuser1')
+    const [userPassword,setUserPassword] = useState<string>('pwoftest1')
+
+    function handleInputForm(event:ChangeEvent<HTMLInputElement>,mode:FunctionModeChange["text"]){
+        //https://qiita.com/natsuhiko/items/5d2a526a217e05162a0a
+        switch(mode){
+            case 'name':
+                setUserName(event.target.value)
+                break;
+            case 'password':
+                setUserPassword(event.target.value)
+        }
+    }
+
     return(
-        <div>
-            <ul>
-                <input style={cssTextInput}
-                       onChange={(e)=>handleInputForm(e,'name')} 
-                       placeholder='name'/><br/>
-                <div style={cssRow}>
+        <div onClick={()=>{
+            giveTextInputCssStyle('default')
+            givePwInputCssStyle('default')
+            giveIconEyeCssStyle('default')
+        }}>
+            <ul >
+                <div style={cssRow} onClick={(e)=>e.stopPropagation()}>
+                    <input style={textInputStyle}
+                        onClick={()=>giveTextInputCssStyle('onCursor')}
+                        onChange={(e)=>handleInputForm(e,'name')} 
+                         placeholder='name'/><br/>
+                </div>
+                <div style={cssRow} onClick={(e)=>e.stopPropagation()}>
                   <input type={pwHiding?'password':'text'} 
-                         style={cssPwInput}
+                         style={pwInputStyle}
+                         onClick={(e)=> {
+                             givePwInputCssStyle('onCursor')
+                             giveIconEyeCssStyle('onCursor')
+                            }}
                          onChange={(e)=>handleInputForm(e,'password')}
                          placeholder='password'/>
-                  <div style={cssEyeDiv}>
+                  <div style={iconEyeStyle}>
                     {pwHiding?<FaEye style={cssEye} onClick={handlePwHiding}/>:<FaEyeSlash style={cssEye} onClick={handlePwHiding}/>}         
                   </div>
                 </div>
-                <button style={cssLoginButton} onClick={userLogin}>Login</button>
+                <button style={loginButtonStyle} 
+                        onMouseEnter={()=>giveLoginButtonCssStyle('onCursor')}
+                        onMouseLeave={()=>giveLoginButtonCssStyle('default')}
+                        onClick={userLogin}>Login</button>
                 <br/>
-                <button style={cssCreateAccount} onClick={createAccount}>Create Account</button>
+                <button style={createAccountStyle} 
+                        onClick={createAccount}
+                        onMouseEnter={()=>giveCreateAccountStyle('onCursor')}
+                        onMouseLeave={()=>giveCreateAccountStyle('default')}
+                        >Create Account</button>
             </ul>
         </div>
     )
