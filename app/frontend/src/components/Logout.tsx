@@ -25,6 +25,7 @@ function LogoutButton(){
     }
 
     const defaultStyle:React.CSSProperties={
+        outline:'none',
         borderRadius:'20px',
         border:'none',
         width:'80px',
@@ -35,6 +36,7 @@ function LogoutButton(){
     }
 
     const replacedStyle:React.CSSProperties={
+        outline:'none',
         borderRadius:'20px',
         border:'none',
         width:'80px',
