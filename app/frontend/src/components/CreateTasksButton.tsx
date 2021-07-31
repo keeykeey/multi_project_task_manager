@@ -5,7 +5,6 @@ import './components.css';
   PROPS
 */
 interface Props{
-  userid:number
   projectid: number|null;
   editInfoTrigger:Function;
 }
@@ -16,7 +15,7 @@ interface Props{
 interface Param {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE',
   mode: 'no-cors' | 'cors' | 'same-origin',
-  credentials: 'include' | 'same-origin' | 'same-origin' | 'omit',
+  credentials: 'include' | 'same-origin' | 'omit',
   headers:{'Content-Type':'application/json' | 'text/html' |'multipart/form-data'}|{'taskid':string},
   body: string | null
 }
@@ -60,7 +59,7 @@ const CreateTasksButton: React.FC<Props> = (props) => {
   }
 
   const [priorityNum,setPriorityNum] = useState<number|null>(null)
-  function handlePriorityInput(e:any){
+  function handlePriorityInput(e:any){//本当はanyではなく、型を明示するべき
     setPriorityNum(e.target.value)
   }
 
