@@ -1,5 +1,5 @@
 import React, { useState,ChangeEvent }from 'react';
-import './App.css';
+import { Link } from 'react-router-dom';
 import {FaEye, FaEyeSlash} from 'react-icons/fa'
 
 interface Param  {
@@ -308,11 +308,12 @@ function Login(){
                         onMouseLeave={()=>giveLoginButtonCssStyle('default')}
                         onClick={userLogin}>Login</button>
                 <br/>
-                <button style={createAccountStyle} 
-                        onClick={createAccount}
+                <Link to='/signup'>
+                    <button style={createAccountStyle} 
                         onMouseEnter={()=>giveCreateAccountStyle('onCursor')}
                         onMouseLeave={()=>giveCreateAccountStyle('default')}
                         >Create Account</button>
+                </Link>
             </ul>
         </div>
     )

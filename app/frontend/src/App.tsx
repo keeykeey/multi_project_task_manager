@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Login from './Login'
+import CreateAccount from './CreateAccount'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import Contents from './Contents'
+import { BrowserRouter as Router, Switch,Route} from 'react-router-dom';
 
 /*
     InterFace
@@ -119,7 +121,13 @@ const App: React.FC = () =>  {
             <Contents project_id={projectId} />
           </div>
         </div>:
-        <Login/>}
+        <Router>
+          <Switch>
+            <Route exact path="/"><Login/></Route>
+            <Route exact path="/signup"><CreateAccount/></Route>
+          </Switch>
+        </Router>
+      }
         {/*LoginName有無で表示を切り替え*/ }
 
       </div>
