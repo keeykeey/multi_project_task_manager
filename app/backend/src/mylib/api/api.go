@@ -51,6 +51,52 @@ func GetUsers(w http.ResponseWriter,r *http.Request){
 
 }
 
+func PostUsers(w http.ResponseWriter, r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http:127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","POST")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control_Allow-Headers",headers)
+
+        type User struct {
+                Name string
+                Password string
+                Email string
+        }
+        var u User        
+        err := json.NewDecoder(r.Body).Decode(&u)
+        if err != nil {
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprintf(w,"err")
+                fmt.Print(w,u.Name + "...")
+        }//本当はエラーハンドリングをしっかりとやるために、Badrequestを返したい。
+
+        con := db.ConnectDb()
+
+        var query string = "INSERT INTO users(name,password,email) VAUES($1,$2,$3);"
+        con.Exec(query,u.Name,u.Password,u.Email)
+
+        fmt.Print(w,"success:")
+
+        defer con.Close()
+}
+
+func DeleteUsers(w http.ResponseWriter, r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","DELETE")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Allow-Headers")
+        w.Header().Set("Access_Control-Allow-Headers",headers)
+
+        var uid int = auth.ListenAuthState(w,r)
+        var query string = "DELETE FROM users WHERE id = $1"
+
+        con := db.ConnectDb()
+        con.Exec(query,uid)
+
+        defer con.Close()
+}
+
 func GetUserName(w http.ResponseWriter,r *http.Request){
         w.Header().Set("Content-Type","text/html")
         w.Header().Set("Access-Control_Allow-Methods","GET")
@@ -211,7 +257,6 @@ func PostProjects(w http.ResponseWriter, r *http.Request){
         var query string = "INSERT INTO projects(name,userid) VALUES($1,$2)"
         con.Exec(query,p.Name,uid)
 
-        fmt.Fprintf(w,"working?")
         fmt.Print(w,p.Name)
         fmt.Fprintf(w,strconv.Itoa(uid))
 

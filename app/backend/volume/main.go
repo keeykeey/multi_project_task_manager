@@ -13,8 +13,10 @@ func main(){
         http.HandleFunc("/auth",auth.GiveAuthToken)
         http.HandleFunc("/logout",auth.RemoveToken)
         http.HandleFunc("/getusername",api.GetUserName)
-        
+
+        http.HandleFunc("/postusers",api.PostUsers)
         http.HandleFunc("/putusers",api.PutUserName)
+        http.HandleFunc("/deleteusers",api.DeleteUsers)
 
         http.HandleFunc("/projects",api.GetProjects)
         http.HandleFunc("/getprojectname",api.GetProjectName)
