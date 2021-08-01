@@ -158,6 +158,38 @@ func PutUserName(w http.ResponseWriter, r *http.Request){
         defer con.Close()
 }
 
+func PutUsersEmail(w http.ResponseWriter, r *http.Request){
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Methods","PUT")
+        w.Header().Set("Access-Control-Allow-Credentials","true")
+        headers := r.Header.Get("Access-Control-Request-Headers")
+        w.Header().Set("Access-Control-Allow-Headers",headers)
+
+        con := db.ConnectDb()
+
+        var uid int
+        uid = auth.ListenAuthState(w,r)
+
+        type Users struct {
+                Email string
+        }
+
+        var u Users
+        err := json.NewDecoder(r.Body).Decode(&u)
+        if err != nil {
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprintf(w,"ERROR : " + err.Error())
+                return
+        }//エラーハンドリングはもう少し練りたいところ。フロント側で、status-codeに応じてちゃんとエラー処理を分岐できるか。
+
+        var query = "UPDATE users SET email=$1 WHERE id=$2"
+        con.Exec(query,u.Email,uid)
+
+        w.WriteHeader(http.StatusOK)
+
+        defer con.Close()
+}
+
 func GetProjects(w http.ResponseWriter,r *http.Request){
         con := db.ConnectDb()
         

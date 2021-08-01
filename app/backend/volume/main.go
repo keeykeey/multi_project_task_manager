@@ -15,7 +15,8 @@ func main(){
         http.HandleFunc("/getusername",api.GetUserName)
 
         http.HandleFunc("/postusers",api.PostUsers)
-        http.HandleFunc("/putusers",api.PutUserName)
+        http.HandleFunc("/putusername",api.PutUserName)
+        http.HandleFunc("/putusersemail",api.PutUsersEmail)
         http.HandleFunc("/deleteusers",api.DeleteUsers)
 
         http.HandleFunc("/projects",api.GetProjects)
