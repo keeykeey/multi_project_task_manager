@@ -263,8 +263,8 @@ function Login(){
     /*
         HANDLE TEXT & PW INPUT
     */
-    const [userName,setUserName] = useState<string>('testuser1')
-    const [userPassword,setUserPassword] = useState<string>('pwoftest1')
+    const [userName,setUserName] = useState<string>('')
+    const [userPassword,setUserPassword] = useState<string>('')
 
     function handleInputForm(event:ChangeEvent<HTMLInputElement>,mode:FunctionModeChange["text"]){
         //https://qiita.com/natsuhiko/items/5d2a526a217e05162a0a
@@ -284,6 +284,7 @@ function Login(){
             giveIconEyeCssStyle('default')
         }}>
             <ul >
+                <h2>Login</h2>
                 <div style={cssRow} onClick={(e)=>e.stopPropagation()}>
                     <input style={textInputStyle}
                         onClick={()=>giveTextInputCssStyle('onCursor')}
