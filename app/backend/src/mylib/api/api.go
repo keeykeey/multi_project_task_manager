@@ -52,11 +52,11 @@ func GetUsers(w http.ResponseWriter,r *http.Request){
 }
 
 func PostUsers(w http.ResponseWriter, r *http.Request){
-        w.Header().Set("Access-Control-Allow-Origin","http:127.0.0.1:3000")
+        w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Methods","POST")
         w.Header().Set("Access-Control-Allow-Credentials","true")
         headers := r.Header.Get("Access-Control-Request-Headers")
-        w.Header().Set("Access-Control_Allow-Headers",headers)
+        w.Header().Set("Access-Control-Allow-Headers",headers)
 
         type User struct {
                 Name string
@@ -69,14 +69,15 @@ func PostUsers(w http.ResponseWriter, r *http.Request){
                 w.WriteHeader(http.StatusOK)
                 fmt.Fprintf(w,"err")
                 fmt.Print(w,u.Name + "...")
+                return
         }//本当はエラーハンドリングをしっかりとやるために、Badrequestを返したい。
 
         con := db.ConnectDb()
 
-        var query string = "INSERT INTO users(name,password,email) VAUES($1,$2,$3);"
+        var query string = "INSERT INTO users(name,password,email) VALUES($1,$2,$3)"
         con.Exec(query,u.Name,u.Password,u.Email)
 
-        fmt.Print(w,"success:")
+        fmt.Print(w,u.Name)
 
         defer con.Close()
 }
