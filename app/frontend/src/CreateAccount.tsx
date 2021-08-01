@@ -16,6 +16,11 @@ interface InputForm {
     email: string;
 }
 
+interface LoginInputForm{
+    name: string;
+    password: string;
+}
+
 interface FunctionModeChange {
     css: 'default' | 'onCursor',
     text:'name' | 'password' | 'email'
@@ -194,7 +199,7 @@ function CreateAccount(){
     }
 
     /*
-        LOGIN ボタン
+        CREATE ACCOUNT ボタン
     */
     const default5:React.CSSProperties={
         width:202,
@@ -252,8 +257,35 @@ function CreateAccount(){
         .then(res=>{
             console.log('success...',res)
         })
-        .then(res=>window.location.href='http://127.0.0.1:3000')
         .catch(err=>console.log('err',err))
+    }
+
+    function userLogin(){
+        const url: string = 'http://127.0.0.1:8080/auth'
+        const login_input_form:LoginInputForm = {
+            name: userName,
+            password: userPassword
+        }
+        
+        const param:Param = {
+            method:'POST',
+            mode:'cors',
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(login_input_form)
+        }
+
+        fetch(url,param)
+        .then(res=>{
+            console.log('success...',res)
+        }).then(res=>window.location.href='http://127.0.0.1:3000')
+    }
+
+    function CreateAccountThenLogin(){
+        createAccount()
+        userLogin()
     }
 
     /*
@@ -355,7 +387,7 @@ function CreateAccount(){
                 <button style={loginButtonStyle} 
                         onMouseEnter={()=>giveLoginButtonCssStyle('onCursor')}
                         onMouseLeave={()=>giveLoginButtonCssStyle('default')}
-                        onClick={createAccount}>Create Account</button>
+                        onClick={CreateAccountThenLogin}>Create Account</button>
                 <br/>
                 <Link to = '/'>
                     <button style={createAccountStyle} 
