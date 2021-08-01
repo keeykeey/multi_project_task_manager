@@ -256,10 +256,6 @@ function Login(){
         }
     }
     
-    function createAccount(){
-        window.location.href='http://127.0.0.1:3000/signup'
-    }
-
     /*
         HANDLE TEXT & PW INPUT
     */
