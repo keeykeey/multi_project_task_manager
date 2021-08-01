@@ -2,15 +2,16 @@ CREATE TABLE users (
   id SERIAL ,
   name VARCHAR NOT NULL ,
   password VARCHAR NOT NULL,
+  email VARCHAR,
   PRIMARY KEY (id)
 );
 
 INSERT INTO users(name, password) VALUES
-  ('testuser1', 'pwoftest1'),
-  ('testuser2', 'pwoftest2'),
-  ('testuser3', 'pwoftest3'),
-  ('testuser4', 'pwoftest4'),
-  ('testuser5', 'pwoftest5')
+  ('testuser1', 'pwoftest1','test1@gmail.com'),
+  ('testuser2', 'pwoftest2','test2@gmail.com'),
+  ('testuser3', 'pwoftest3','test3@gmail.com'),
+  ('testuser4', 'pwoftest4','test4@gmail.com'),
+  ('testuser5', 'pwoftest5','test5@gmail.com')
 ;
 
 CREATE TABLE tokens (
