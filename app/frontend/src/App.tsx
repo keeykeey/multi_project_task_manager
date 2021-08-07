@@ -5,7 +5,7 @@ import CreateAccount from './CreateAccount'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import Contents from './Contents'
-import { BrowserRouter as Router, Switch,Route} from 'react-router-dom';
+import { HashRouter as Router, Switch,Route} from 'react-router-dom';
 
 /*
     InterFace
@@ -124,7 +124,7 @@ const App: React.FC = () =>  {
         <Router>
           <Switch>
             <Route exact path="/"><Login/></Route>
-            <Route exact path="/signup"><CreateAccount/></Route>
+            <Route exact path="/signup"><CreateAccount /></Route>
           </Switch>
         </Router>
       }
