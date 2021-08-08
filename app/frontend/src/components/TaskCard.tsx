@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,ChangeEvent } from 'react';
 import './components.css';
 import { RiDeleteBin6Line } from 'react-icons/ri'; 
 import { FiEdit } from 'react-icons/fi';
@@ -57,6 +57,20 @@ const TaskCard: React.FC<Props> = (props) => {
     */
   const priorityWords:string[] = ['Important','Noraml','Not so important']
 
+  /*
+    CSS STYLE DEFINITION 
+    & HANDLE CSS FUNCTIONS
+  */
+
+  const task_card_block_style:React.CSSProperties={
+    outline:'none',
+    borderRadius:'20px',
+    height:'90px',
+    verticalAlign:'middle',
+    display:'flex',
+    backgroundColor:'#ffffff'
+  }
+
   const task_card_style:React.CSSProperties={
     outline:'none',
     margin:'0px 0px 0px 0px',
@@ -68,7 +82,6 @@ const TaskCard: React.FC<Props> = (props) => {
     borderRadius:20,
     cursor:'pointer', 
   }
-
   const task_card_style_hover:React.CSSProperties={
     outline:'none',
     margin:'0px 0px 0px 0px',
@@ -82,14 +95,54 @@ const TaskCard: React.FC<Props> = (props) => {
     cursor:'pointer', 
     fontSize:'1.1em',         
   }
-
   const [taskCardStyle,setTaskCardStyle] = useState<React.CSSProperties>(task_card_style)//TaskCardのStyleの初期値
-
   function handleHoverTaskCard(cssProperties:React.CSSProperties){
     /*
         ユーザーのマウス操作ごとにcssPropertiesを入れ替え、TASK CARDのスタイルを変更する。
     */
     setTaskCardStyle(cssProperties)  
+  }
+
+  const task_card_icon_style:React.CSSProperties={
+    height:'40px',
+    width:'20px',
+    margin:'20px 5px auto 5px',
+    padding:'0 5px 0 5px',
+    cursor:'pointer',
+  }
+  const task_card_icon_style_hover:React.CSSProperties={
+    height:'40px',
+    width:'20px',
+    margin:'17px auto auto 3px',
+    padding:'0 5px 0 5px',
+    cursor:'pointer',
+    fontSize:'1.3em',
+  }
+  const [deleteIconBlockStyle,setDeleteIconStyle]=useState<React.CSSProperties>(task_card_icon_style)
+  function enterDeleteIcon(){
+    setDeleteIconStyle(task_card_icon_style_hover)
+  }
+  function leaveDeleteIcon(){
+    setDeleteIconStyle(task_card_icon_style)
+  }
+  const [editIconStyle,setEditIconStyle]=useState<React.CSSProperties>(task_card_icon_style)
+  function enterEditIcon(){
+    setEditIconStyle(task_card_icon_style_hover)
+  }
+  function leaveEditIcon(){
+    setEditIconStyle(task_card_icon_style)
+  }
+
+  const deadline_block_style:React.CSSProperties={
+    textAlign:'right',
+    margin:'0px 0px 10px 0',
+    backgroundColor:'#ffffff',
+  }
+
+  const btnInModalStyle:React.CSSProperties={
+    width:'40px',
+    textAlign:'center',
+    margin:'0px 10px 0px 10px',
   }
 
   /*
@@ -114,8 +167,7 @@ const TaskCard: React.FC<Props> = (props) => {
   }
 
   const [modalStyle,setModalStyle] = useState<React.CSSProperties>()
-  //本当はeにanyではなく明確な型を与えるべき。
-  function giveModalStyle(e:any){
+  function giveModalStyle(e:React.MouseEvent){
     const _x:number = e.clientX
     const _y:number = e.clientY
     const width:number = 205
@@ -168,16 +220,16 @@ const TaskCard: React.FC<Props> = (props) => {
   const [deadLineInput,setDeadLineInput] = useState<string>()
   const [priorityInput,setPriorityInput] = useState<number>()
 
-  function handleTaskNameInput(e:any){//本当は(e:any)ではなく、型を指定するべき。
+  function handleTaskNameInput(e:ChangeEvent<HTMLInputElement>){
     setTaskNameInput(e.target.value)
   }
   
-  function handleDeadLineInput(e:any){//本当は(e:any)ではなく、型を指定するべき。
+  function handleDeadLineInput(e:ChangeEvent<HTMLInputElement>){
     setDeadLineInput(e.target.value)
   }
 
-  function handlePriorityInput(e:any){//本当は(e:any)ではなく、型を指定するべき。
-    setPriorityInput(e.target.value)
+  function handlePriorityInput(e:ChangeEvent<HTMLSelectElement>){
+    setPriorityInput(Number(e.target.value))
   }
 
   function editTask(){
@@ -212,7 +264,7 @@ const TaskCard: React.FC<Props> = (props) => {
   */
   return (
     <div>
-      <div className='TaskCardBlock'>
+      <div style={task_card_block_style}>
 
         {/* CARD */}
         <button style={taskCardStyle}
@@ -220,7 +272,9 @@ const TaskCard: React.FC<Props> = (props) => {
                 onMouseEnter={()=>handleHoverTaskCard(task_card_style_hover)}>{ props.text }</button>
 
         {/* DELETE ICON*/}
-        <div  className='TaskCardIcon'>
+        <div style={deleteIconBlockStyle}
+             onMouseEnter={enterDeleteIcon}
+             onMouseLeave={leaveDeleteIcon}>
           <RiDeleteBin6Line onClick={(e)=>{
             modalDeleteWindow()
             giveModalStyle(e)
@@ -230,14 +284,16 @@ const TaskCard: React.FC<Props> = (props) => {
           <div id='overlay2' onClick={modalDeleteWindow}>
             <div style={modalStyle} onClick={(e)=>e.stopPropagation()}>
               <p ><GoAlert/>本当に削除しますか？</p>
-              <button className='btnInModal' onClick={deleteTask}>yes</button>
-              <button className='btnInModal' onClick={modalDeleteWindow}>no</button>
+              <button style={btnInModalStyle} onClick={deleteTask}>yes</button>
+              <button style={btnInModalStyle} onClick={modalDeleteWindow}>no</button>
             </div>
           </div>:
         ''}
 
         {/* EDIT ICON */}
-        <div className='TaskCardIcon'>
+        <div style={editIconStyle}
+             onMouseEnter={enterEditIcon}
+             onMouseLeave={leaveEditIcon}>
           <FiEdit onClick={(e)=>{
             modalEditWindow()
             giveModalStyle(e)
@@ -265,7 +321,7 @@ const TaskCard: React.FC<Props> = (props) => {
       </div>
 
       {/* DEAD LINE */}
-      <div className='TaskDeadLineBlock' > 
+      <div style={deadline_block_style} > 
         Dead Line : {props.deadline.slice(0,10)}
       </div>
     </div>
