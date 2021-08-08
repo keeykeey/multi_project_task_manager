@@ -4,7 +4,6 @@ import(
         "mylib/db"
         "database/sql"
         "log"
-        "fmt"
 )
 
 func CountRows(rows *sql.Rows)(count int){
@@ -33,6 +32,8 @@ func CheckPidUid(pid int,uid int) int{
         }
 
         count := CountRows(rows)
+
+        defer con.Close()
 
         if count != 1 {
                 return 0;
