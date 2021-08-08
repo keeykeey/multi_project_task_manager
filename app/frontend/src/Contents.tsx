@@ -25,7 +25,6 @@ function Contents(props:Props){
   useEffect(()=>{
     fetchTasks(url,param)// eslint-disable-next-line react-hooks/exhaustive-deps
     fetchProjectName()
-    console.log('contents useeffect')
   },[props.project_id])
 
   const param:Param = {
@@ -87,7 +86,7 @@ function Contents(props:Props){
   return (
     <div className='contents'>
       <h3 className='rows'>
-        {props.project_id?pname+'のタスク':'タスクを選択してください'}
+        {props.project_id?pname+' のタスク一覧':'タスクを選択してください'}
         <CreateTasksButton  projectid={props.project_id} editInfoTrigger={editInfoTrigger}/>
       </h3><hr/>
       {tasks.map(t=><div key={t.id}>
