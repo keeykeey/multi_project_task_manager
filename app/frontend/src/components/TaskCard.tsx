@@ -93,7 +93,6 @@ const TaskCard: React.FC<Props> = (props) => {
     border:'none',
     borderRadius:20,
     cursor:'pointer', 
-    fontSize:'1.1em',         
   }
   const [taskCardStyle,setTaskCardStyle] = useState<React.CSSProperties>(task_card_style)//TaskCardのStyleの初期値
   function handleHoverTaskCard(cssProperties:React.CSSProperties){
@@ -164,6 +163,15 @@ const TaskCard: React.FC<Props> = (props) => {
     }else{
       setShowModalEditWindow(true)
     }
+    /*
+        モーダル画面を一度表示し、入力フォームに文字をタイプし、たのちモーダル画面を閉じ、
+        その後サイドモーダル画面を表示すると、
+        入力フォームには何も入力されていないかのように見えるが、先にタイプした文字が内部的には保持されたまま。
+        そこで、モーダル画面を表示するために、フォームの各インプットを初期化する。
+    */
+    setTaskNameInput(props.text)
+    setDeadLineInput(props.deadline)
+    setPriorityInput(props.taskpriority)
   }
 
   const [modalStyle,setModalStyle] = useState<React.CSSProperties>()
@@ -216,9 +224,9 @@ const TaskCard: React.FC<Props> = (props) => {
   /*
       edit-tasks modal window
   */
-  const [taskNameInput,setTaskNameInput] = useState<string>()
-  const [deadLineInput,setDeadLineInput] = useState<string>()
-  const [priorityInput,setPriorityInput] = useState<number>()
+  const [taskNameInput,setTaskNameInput] = useState<string>(props.text)
+  const [deadLineInput,setDeadLineInput] = useState<string>(props.deadline)
+  const [priorityInput,setPriorityInput] = useState<number>(props.taskpriority)
 
   function handleTaskNameInput(e:ChangeEvent<HTMLInputElement>){
     setTaskNameInput(e.target.value)
@@ -253,8 +261,8 @@ const TaskCard: React.FC<Props> = (props) => {
     fetch(url,param)
     .then(res=>console.log('success...'))
     .then(res=>{
-      setTimeout(modalEditWindow,500)
-      setTimeout(props.editInfoTrigger,550)
+      setTimeout(modalEditWindow,400)
+      setTimeout(props.editInfoTrigger,500)
     })
     .catch(error=>console.log('error...',error))
   }
@@ -312,7 +320,11 @@ const TaskCard: React.FC<Props> = (props) => {
                   <option value='2'>{priorityWords[1]}</option>
                   <option value='3'>{priorityWords[2]}</option>
                 </select>
-                <button onClick={editTask}>Edit the Task</button>
+                <button onClick={()=>{
+                  editTask()
+                  setTimeout(()=>{setTaskCardStyle(task_card_style)
+                                  console.log('wa')},3000)
+                }}>Edit the Task</button>
               </ul>              
             </div>
           </div>:
@@ -324,6 +336,7 @@ const TaskCard: React.FC<Props> = (props) => {
       <div style={deadline_block_style} > 
         Dead Line : {props.deadline.slice(0,10)}
       </div>
+      <button onClick={()=>setTaskCardStyle(task_card_style)}>click me</button>
     </div>
 
   );
