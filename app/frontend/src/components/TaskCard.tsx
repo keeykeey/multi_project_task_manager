@@ -76,8 +76,8 @@ const TaskCard: React.FC<Props> = (props) => {
     margin:'0px 0px 0px 0px',
     width:'260px',
     height:'90%',
-    //hoverした時に色が濃くなるように、アルファ(+'99')を設定。
-    backgroundColor:priorityColor[props.taskpriority]+'99',
+    //hoverした時に色が濃くなるように、アルファ(+'cc')を設定。
+    backgroundColor:priorityColor[props.taskpriority]+'cc',
     border:'none',
     borderRadius:20,
     cursor:'pointer', 
@@ -88,7 +88,7 @@ const TaskCard: React.FC<Props> = (props) => {
     width:'260px',
     height:'90%',
     //DBに(0,1,2ではなく)1,2,3で値を入れているから、インデックス番号として使う時にはマイナス１している。
-    //hoverした時に色が濃くなるように、アルファ(+'99')を無くした。
+    //hoverした時に色が濃くなるように、アルファ(+'cc')を無くした。
     backgroundColor:priorityColor[props.taskpriority],
     border:'none',
     borderRadius:20,
@@ -322,9 +322,8 @@ const TaskCard: React.FC<Props> = (props) => {
                 </select>
                 <button onClick={()=>{
                   editTask()
-                  setTimeout(()=>{setTaskCardStyle(task_card_style)
-                                  console.log('wa')},3000)
-                }}>Edit the Task</button>
+                  setTimeout(()=>setTaskCardStyle(task_card_style))
+                  }}>Edit the Task</button>
               </ul>              
             </div>
           </div>:
@@ -336,7 +335,6 @@ const TaskCard: React.FC<Props> = (props) => {
       <div style={deadline_block_style} > 
         Dead Line : {props.deadline.slice(0,10)}
       </div>
-      <button onClick={()=>setTaskCardStyle(task_card_style)}>click me</button>
     </div>
 
   );
