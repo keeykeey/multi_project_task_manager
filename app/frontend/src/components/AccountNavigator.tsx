@@ -47,11 +47,11 @@ function AccountNavigator<React>(props:Props){
     width:'80px',
     height:'30px',
     borderRadius:'20px 20px 20px 20px',
-    backgroundColor:'#459915',
+    backgroundColor:'#409010',
     border:'none',
     margin:'0 0 0 0',
     cursor:'pointer',
-    fontSize:'18px',
+    fontSize:'14px',
   }
 
   const [btnStyle,setBtnStyle] = useState<React.CSSProperties>(defaultBtnStyle)
@@ -112,7 +112,7 @@ function AccountNavigator<React>(props:Props){
   const defaultNameButtonStyle:React.CSSProperties = {
     width:'100px',
     height:'35px',
-    backgroundColor:'#5498ab99',   
+    backgroundColor:'#5498abaa',   
     outline:'none',
     border:'none',
     cursor:'pointer',
@@ -122,11 +122,11 @@ function AccountNavigator<React>(props:Props){
   const onMouseEnterNameButtonStyle:React.CSSProperties = {
     width:'100px',
     height:'35px',
-    backgroundColor:'#5498ab99',   
+    backgroundColor:'#5498ab',   
     outline:'none',
     border:'none',
     cursor:'pointer',
-    fontSize:'16px',
+    fontSize:'14px',
   }
 
   const [nameButtonStyle,setNameButtonStyle] = useState<React.CSSProperties>(defaultNameButtonStyle)
@@ -171,7 +171,7 @@ function AccountNavigator<React>(props:Props){
       const defaultEmailButtonStyle:React.CSSProperties = {
         width:'100px',
         height:'35px',
-        backgroundColor:'#5498ab99',   
+        backgroundColor:'#5498abaa',   
         outline:'none',
         border:'none',
         cursor:'pointer',
@@ -181,11 +181,11 @@ function AccountNavigator<React>(props:Props){
       const onMouseEnterEmailButtonStyle:React.CSSProperties = {
         width:'100px',
         height:'35px',
-        backgroundColor:'#5498ab99',   
+        backgroundColor:'#5498ab',   
         outline:'none',
         border:'none',
         cursor:'pointer',
-        fontSize:'16px',
+        fontSize:'14px',
       }
     
       const [emailButtonStyle,setEmailButtonStyle] = useState<React.CSSProperties>(defaultEmailButtonStyle)

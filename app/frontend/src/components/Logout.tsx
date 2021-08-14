@@ -41,9 +41,9 @@ function LogoutButton(){
         border:'none',
         width:'80px',
         height:'30px',
-        backgroundColor:'#4488f4',
+        backgroundColor:'#4080f0',
         cursor:'pointer',
-        fontSize:'18px',
+        fontSize:'14px',
     }
 
     const [buttonStyle, setButtonStyle] = useState<React.CSSProperties>(defaultStyle)
