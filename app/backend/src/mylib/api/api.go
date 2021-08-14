@@ -350,7 +350,7 @@ func DeleteProjects(w http.ResponseWriter, r *http.Request){
 func GetTasks(w http.ResponseWriter,r *http.Request){
         w.Header().Set("Content-Type","application/json")
         w.Header().Set("Access-Control-Allow-Headers","projectid")
-        w.Header().Set("Access-Control_Allow-Methods","GET")
+        w.Header().Set("Access-Control-Allow-Methods","GET")
         w.Header().Set("Access-Control-Allow-Origin","http://127.0.0.1:3000")
         w.Header().Set("Access-Control-Allow-Credentials","true")
 
@@ -363,8 +363,7 @@ func GetTasks(w http.ResponseWriter,r *http.Request){
         var s = r.Header.Get("projectid")
         projectid, _ = strconv.Atoi(s)
         var query = "SELECT id,name,deadline,taskpriority FROM tasks WHERE projectid = $1"
-
-        fmt.Println("projectid in backend",projectid)
+        
         isValid:= CheckPidUid(projectid,uid)
         if isValid == 0 {
                 fmt.Println("error inside CheckUidPid occured...");
